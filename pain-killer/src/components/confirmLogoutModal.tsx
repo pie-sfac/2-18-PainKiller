@@ -7,6 +7,9 @@ export default function ConfirmLogoutModal({ setModalShow }: PropsType) {
   const closeModal = () => {
 
     setModalShow(false);
+
+    localStorage.clear();
+
     navigate('/');
     
   };
