@@ -83,18 +83,20 @@ const MemberTickets = () => {
                 key={ticket.id}
                 className="flex justify-between border rounded p-2"
               >
-                <div className="flex flex-col gap-3">
-                  <div>수강권 이름 : {ticket.title}</div>
-                  <div>잔여횟수 : {ticket.remainingCount}</div>
-                  <div>
-                    유효기간 : {ticket.startAt} ~ {ticket.endAt}
+                <Link key={ticket.id} to={`/dtickets/${ticket.id}`}>
+                  <div className="flex flex-col gap-3">
+                    <div>수강권 이름 : {ticket.title}</div>
+                    <div>잔여횟수 : {ticket.remainingCount}</div>
+                    <div>
+                      유효기간 : {ticket.startAt} ~ {ticket.endAt}
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-col gap-3">
-                  <div>수강권 일시중단</div>
-                  <div>수강권 양도</div>
-                  <div>수강권 환불</div>
-                </div>
+                  <div className="flex flex-col gap-3">
+                    <div>수강권 일시중단</div>
+                    <div>수강권 양도</div>
+                    <div>수강권 환불</div>
+                  </div>
+                </Link>
               </div>
             ))}
           </div>
