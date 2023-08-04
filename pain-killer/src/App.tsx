@@ -38,6 +38,7 @@ import StudyTicketList from './pages/StudyMangement/StudyTicket/StudyTicketList'
 import SearchPrivateCharge from './pages/StudyMangement/StudyTicket/SearchPrivateCharge';
 import ModMemInfo from './pages/member/ModMemInfo';
 import PwReset from './pages/Manager_login/ContactPwReset';
+import MemberTickets from './pages/member/MemberTickets';
 
 function App() {
   return (
@@ -84,35 +85,9 @@ function App() {
 
           <Route path="/search" element={<SearchResult />} />
 
-          {/* 박재형 : 어디 둬야 할지 몰라서 여기에 두었음, 디자인만 약소하게 구현되어 있으며 아직 데이터 넣는 것은 못해봄*/}
-          {/* 직원로그인 */}
-          <Route path="/login" element={<LoginTsx />} />
+          {/* 회원 수강권 조회 */}
+          <Route path='/memtickets/:memberId' element = {<MemberTickets/>} />
 
-          {/* 비밀번호변경 페이지 */}
-          <Route path="/change" element={<PwReset />} />
-
-          {/*  간편로그인 페이지 */}
-          <Route path="/simple" element={<SimpleLoginPage />} />
-
-          {/* 간편로그인 후 키패드 호출 페이지 */}
-          <Route path="/udetail" element={<UserDetailPage />} />
-
-          {/* 회원관리 */}
-          <Route path="/member" element={<MemberManagementPage />} />
-
-          {/* 수강권조회 */}
-          <Route path="/ticket" element={<TicketPage />} />
-
-          {/* 수강권상세 */}
-          <Route path="/tdetail" element={<TicketDetailPage />} />
-
-          {/* 수강권부여 */}
-          <Route path="/tallocate" element={<TicketAllocationPage />} />
-
-          {/* 수강권수정 */}
-          <Route path="/edit" element={<EditTicketPage />} />
-
-          <Route path="/mPage" element={<MyPage />} />
         </Routes>
       </Router>
     </div>
