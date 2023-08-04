@@ -35,8 +35,6 @@ const MemberTickets = () => {
   // 해당 회원에게 부여된 수강권 담을 배열
   const [memTickets, setMemtickets] = useState<IIssuedTicket[]>([]);
 
-  // 이용중 종료됨 구분
-  const [isCancel, setIsCancel] = useState(false);
 
   // 회원 수강권 조회 api
   const getMemTickets = async () => {
@@ -63,7 +61,7 @@ const MemberTickets = () => {
             <p className="text-lg ml-2">수강권</p>
           </div>
           <div className="flex">
-            <Link to={`/centerticket`} className="flex items-center">
+            <Link to={`/centerticket`} state={{id : memberId}}  className="flex items-center">
               <span>부여하기</span>
             </Link>
           </div>

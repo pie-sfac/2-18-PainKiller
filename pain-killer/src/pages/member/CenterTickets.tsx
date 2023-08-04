@@ -32,9 +32,9 @@ const CenterTickets = () => {
 
     const [ticketList, setTicketList] = useState<Ticket[]>([]);
 
-    // memberId 가져오기
     const location = useLocation();
     const memberId = location.state.id;
+    
 
     const navigate = useNavigate();
     
@@ -61,7 +61,6 @@ const CenterTickets = () => {
 
     useEffect(()=> {
         getSellingTicket();
-        console.log(memberId);
     }, [])
 
      // 영어값을 한글로 변환하는 함수
@@ -92,8 +91,8 @@ const CenterTickets = () => {
                 <div className="font-bold text-left p-2">센터 수강권</div>
                 {
                     ticketList.map((ticket) => (
-                    <Link to = {`/grantticket/${ticket.id}`} state={{id : memberId}} >    
-                        <div className="border border-Gray-200 rounded-xl p-6 mb-3" key={ticket.id}>
+                    <Link to = {`/grantticket/${ticket.id}`} state={{id : memberId}} key={ticket.id}>    
+                        <div className="border border-Gray-200 rounded-xl p-6 mb-3">
                             <div>
                                 <div className="flex justify-between items-end mb-2">
                                 <p className="text-left truncate font-semibold">{ticket.title}</p>
