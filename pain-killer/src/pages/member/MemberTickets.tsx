@@ -124,13 +124,13 @@ const MemberTickets = () => {
   };
 
   // useEffect를 사용하여 수강권 정보를 로컬 스토리지와 동기화
-  useEffect(() => {
-    // API로부터 받은 수강권 정보가 있을 경우 로컬 스토리지로부터 로드하지 않음
-    if (memTickets.length > 0) return;
+useEffect(() => {
+  // API로부터 받은 수강권 정보가 있을 경우 로컬 스토리지로부터 로드하지 않음
+  if (memTickets.length > 0) return;
 
-    const storedTickets = loadTicketsFromLocalStorage();
-    setMemtickets(storedTickets);
-  }, [memTickets]);
+  const storedTickets = loadTicketsFromLocalStorage();
+  setMemtickets(storedTickets);
+}, []); 
 
   // 수강권 상태를 토글하는 변수
   const [showSuspended, setShowSuspended] = useState(false);
@@ -158,7 +158,6 @@ const MemberTickets = () => {
     setSuspendedTickets(suspendedTicketsList);
   }, [memTickets]);
 
-  console.log(memberId);
   return (
     <div>
       <header className="bg-white border-b border-t-neutral-100">
