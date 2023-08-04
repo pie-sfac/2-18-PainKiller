@@ -41,6 +41,7 @@ import PwReset from './pages/Manager_login/ContactPwReset';
 import MemberTickets from './pages/member/MemberTickets';
 import GrantList from './pages/StudyMangement/GrantList';
 import CenterTickets from './pages/member/CenterTickets';
+import GrantTicket from './pages/member/GrantTicket';
 
 function App() {
   return (
@@ -93,6 +94,8 @@ function App() {
           <Route path='/grant-list/:ticketId' element = {<GrantList/>}/>
            {/* 회원에게 수강권 부여 전 판매중인 센터 티겟 목록 */}
            <Route path='/centerticket' element = {<CenterTickets/>}/>
+           {/* 회원 수강권 부여 페이지*/}
+           <Route path='/grantticket/:ticketId' element = {<GrantTicket/>}/>
           
         </Routes>
       </Router>

@@ -46,16 +46,16 @@ const MemberTickets = () => {
         const response  = await instance.get(`/members/${memberId}/issued-tickets`)
         
         setMemtickets(response.data.issuedTickets);
-        console.log(response)
     }
 
 
     useEffect(()=>{
         getMemTickets();
+        console.log(memberId)
     }, [])
     
 
-    console.log(memberId)
+ 
     return(
         <div>
             <header className="bg-white border-b border-t-neutral-100">
@@ -65,7 +65,7 @@ const MemberTickets = () => {
                         <p className="text-lg ml-2">수강권</p>
                     </div>
                     <div className='flex'>
-                        <Link to = {`/centerticket`} className='flex items-center'>
+                        <Link to = {`/centerticket`} state = {{id : memberId}} className='flex items-center'>
                             <span>부여하기</span>
                         </Link>
                     </div>
