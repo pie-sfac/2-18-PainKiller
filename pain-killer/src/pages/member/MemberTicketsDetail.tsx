@@ -80,7 +80,7 @@ const DetailMemberTickets = () => {
 
         <div className="flex justify-between mt-6 ">
           <p className="font-bold text-xl">{deTickets?.title}</p>
-          <p className="text-left bg-Pri-50 text-xs px-2 py-1 rounded text-Pri-500 w-[83px]">
+          <p className="flex justify-center items-center bg-Pri-50 text-xs px-1 py-1 rounded text-Pri-500 w-[83px]">
             개인수업 - 1:1
           </p>
         </div>
