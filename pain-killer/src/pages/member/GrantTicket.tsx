@@ -163,7 +163,7 @@ const GrantTicket = () => {
             </header>
 
             
-                <div className='flex'>
+                <div className='flex gap-3'>
                         <div className='text-[16px] font-bold'>{ticketInfo?.title}</div>
                         <p className="text-right bg-Pri-50 text-xs px-2 py-1 rounded text-Pri-500">
                             {ticketInfo?.lessonType === 'GROUP' ? '그룹 수업' : '개인수업 - 1:1'}
