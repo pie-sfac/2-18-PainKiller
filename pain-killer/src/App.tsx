@@ -39,6 +39,8 @@ import SearchPrivateCharge from './pages/StudyMangement/StudyTicket/SearchPrivat
 import ModMemInfo from './pages/member/ModMemInfo';
 import PwReset from './pages/Manager_login/ContactPwReset';
 import MemberTickets from './pages/member/MemberTickets';
+import DetailMemberTickets from './pages/member/MemberTicketsDetail';
+
 
 function App() {
   return (
@@ -87,6 +89,9 @@ function App() {
 
           {/* 회원 수강권 조회 */}
           <Route path='/memtickets/:memberId' element = {<MemberTickets/>} />
+
+          {/* 회원 수강권 상세 */}
+          <Route path="dtickets/:ticketId" element = {<DetailMemberTickets />} />
 
         </Routes>
       </Router>

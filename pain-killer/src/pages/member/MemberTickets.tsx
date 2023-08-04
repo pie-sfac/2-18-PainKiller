@@ -27,7 +27,9 @@ interface IIssuedTicket {
 
 const MemberTickets = () => {
 
-    const {memberId} = useParams();
+    const {memberId} = useParams()
+
+    
 
     const navigate = useNavigate();
     
@@ -47,15 +49,13 @@ const MemberTickets = () => {
         
         setMemtickets(response.data.issuedTickets);
         console.log(response)
+        console.log(response.data)
     }
 
 
     useEffect(()=>{
         getMemTickets();
     }, [])
-    
-
-    console.log(memberId)
     return(
         <div>
             <header className="bg-white border-b border-t-neutral-100">
@@ -80,22 +80,25 @@ const MemberTickets = () => {
                     <span>이용중</span>
                     <span>종료됨</span>
                 </div>
+                
                 <div className='flex flex-col gap-5'>
                 {memTickets.map((ticket)=> (
                     <div key={ticket.id} className='flex justify-between border rounded p-2'>
-                        <div className='flex flex-col gap-3'>
-                            <div>수강권 이름 : {ticket.title}</div>
-                            <div>잔여횟수 : {ticket.remainingCount}</div>
-                            <div>유효기간 : {ticket.startAt} ~ {ticket.endAt}</div>
-                        </div>
-                        <div className='flex flex-col gap-3'>
-                            <div>수강권 일시중단</div>
-                            <div>수강권 양도</div>
-                            <div>수강권 환불</div>
-                        </div>
+                      <Link key={ticket.id} to={`/dtickets/${ticket.id}`}>
+                          <div className='flex flex-col gap-3'>
+                              <div>수강권 이름 : {ticket.title}</div>
+                              <div>잔여횟수 : {ticket.remainingCount}</div>
+                              <div>유효기간 : {ticket.startAt} ~ {ticket.endAt}</div>
+                          </div>
+                          <div className='flex flex-col gap-3'>
+                              <div>수강권 일시중단</div>
+                              <div>수강권 양도</div>
+                              <div>수강권 환불</div>
+                          </div>
+                      </Link>
                     </div>
                 ))}
-                </div>
+                </div> 
             </div>
             
             }
