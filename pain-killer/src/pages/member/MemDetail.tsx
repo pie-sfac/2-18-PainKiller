@@ -32,6 +32,7 @@ const MemDetail = () => {
   const { useData } = useParams();
 
   const [memContent, setMemContent] = useState<Memdetail>();
+ 
 
   const navigate = useNavigate();
 
@@ -49,6 +50,7 @@ const MemDetail = () => {
       alert(error);
     }
   }
+  console.log(useData)
 
   useEffect(() => {
     getMemDetail();
@@ -99,8 +101,10 @@ const MemDetail = () => {
               <span className='font-semibold'>회원정보</span>
             </div>
             <div className='flex gap-2 items-center'>
-              <span className='text -[6px] text-[#000000]'>수강권/계약서</span> 
-              <span className = 'text - [6px] text-[#000000] cursor-pointer'>알림메세지 보내기</span>
+              <Link to = {`/memtickets/${useData}`} className='flex items-center'>
+                <span className='text-[12px] text-[#000000]'>수강권/계약서</span> 
+              </Link>
+              <span className = 'text-[12px] text-[#000000] cursor-pointer'>알림메세지 보내기</span>
             </div>
           </div>
 
