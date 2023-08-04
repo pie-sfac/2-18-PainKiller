@@ -113,6 +113,9 @@ function App() {
             path="/issued-tickets/:issuedTicketId"
             element={<MemberTicketsFix />}
           />
+
+          {/* 비밀번호 재설정 */}
+          <Route path='/pwdreset' element={<PwReset />} />
           
         </Routes>
       </Router>

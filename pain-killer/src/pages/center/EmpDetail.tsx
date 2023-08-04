@@ -120,7 +120,10 @@ const EmpDetail = () => {
                     <Link to = {`/modrole/${userId}`} className='flex items-center'>
                       <span className='text-[10px] text-[#AEAEAE] cursor-pointer'>권한 설정</span>
                     </Link>
+
+                    <Link to="/pwdreset">
                     {empContent.pwdChangeRequired && <span className='text-[10px] text-[#AEAEAE] cursor-pointer'>비밀번호 변경</span>}
+                    </Link>
                     <span className='text-[10px] text-[#AEAEAE] cursor-pointer'>직원 퇴사</span>
                   </div>
                 </div>
