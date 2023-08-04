@@ -169,7 +169,6 @@ const GrantTicket = () => {
           </nav> 
         </header>
 
-
         <div className='flex gap-2'>
             <div className='text-[16px] font-bold'>{ticketInfo?.title}</div>
             <p className="text-right bg-Pri-50 text-xs px-2 py-1 rounded text-Pri-500">
