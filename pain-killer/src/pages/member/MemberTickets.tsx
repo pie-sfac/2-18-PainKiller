@@ -65,9 +65,9 @@ const MemberTickets = () => {
                         <p className="text-lg ml-2">수강권</p>
                     </div>
                     <div className='flex'>
-                        
+                        <Link to = {`/centerticket`} className='flex items-center'>
                             <span>부여하기</span>
-                        
+                        </Link>
                     </div>
                  </nav>
             </header>
