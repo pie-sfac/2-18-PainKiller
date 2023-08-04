@@ -152,96 +152,103 @@ const GrantTicket = () => {
     }
   
     return(
-        <div className='flex flex-col gap-5 p-2'>
-             <header className="bg-white border-b border-t-neutral-100">
-                <nav className="flex p-5">
-                    <div className="flex justify-between items-center cursor-pointer" onClick={onPrevPage}>
-                      <img src={BackImage} alt="Back" />
-                      <p className="text-lg ml-2">수강권 부여</p>
-                    </div>
-                </nav>
-            </header>
 
-            
-                <div className='flex'>
-                        <div className='text-[16px] font-bold'>{ticketInfo?.title}</div>
-                        <p className="text-right bg-Pri-50 text-xs px-2 py-1 rounded text-Pri-500">
-                            {ticketInfo?.lessonType === 'GROUP' ? '그룹 수업' : '개인수업 - 1:1'}
-                        </p>
-                    </div>
+      <div className='flex flex-col gap-5 p-2'>
+        <header className="bg-white border-b border-t-neutral-100">
+          <nav className="flex p-5 justify-between">
+            <div
+              className="flex justify-between items-center cursor-pointer"
+              onClick={onPrevPage}
+            >
+              <img src={BackImage} alt="Back" />
+              <p className="text-lg">수강권 부여</p>
+            </div>
+            <div className="flex">
+              <span>완료</span>
+            </div>
+          </nav> 
+        </header>
 
-                    <div className='flex flex-col'>
-                        <div className='text-left'>수강권명</div>
-                        <div className='border rounded bg-[#F4F4F4] text-[#AFAFAF] px-4 py-2'>{ticketInfo?.title} </div>
-                    </div>
-                    
-                    {/* 캘린더 라이브러리 잘 이용하면 버튼 이용해서 날짜설정 */}
-                    <div className='flex flex-col mr-10'>
-                        <div className='text-left'>유효기간(캘린더 라이브러리 이용하면 날짜 지정 편해질지도?)</div>
-                        <div className='flex flex-col items-start'>
-                            <input 
-                            className='rounded border w-1/2 p-2' 
-                            placeholder='0000-00-00'
-                            value={start}
-                            onChange={(e) => setStart(e.target.value)}/>
-                            ~ 
-                            <input 
-                            className='rounded border w-1/2 p-2' 
-                            placeholder='0000-00-00'
-                            value={end}
-                            onChange={(e) => setEnd(e.target.value)}/>
-                        </div>
-                    </div>
 
-                    <div className='flex flex-col'>
-                        <div className='text-left'>수강권 기간</div>
-                        <div className='flex justify-between border rounded bg-[#F4F4F4] text-[#AFAFAF] px-4 py-2'>
-                            <div>{ticketInfo?.defaultTerm}</div>
-                            <div>{convertTermUnitToKorean(ticketInfo?.defaultTermUnit)}</div> 
-                        </div>
-                    </div>
-                    <div className='flex flex-col'>
-                        <div className='text-left'>기본 횟수</div>
-                        <div className='flex justify-between border rounded bg-[#F4F4F4] text-[#AFAFAF] px-4 py-2'>
-                            <div>{ticketInfo?.defaultCount}</div>
-                            <div>회</div> 
-                        </div>
-                    </div>
-
-                    <div className="flex items-start flex-col mb-4">
-                        <p className="mr-2">서비스횟수(최대 {maxServiceCount}회)</p>
-                        <p className="text-xs mb-1">
-                            서비스로 부여되는 횟수를 제한하여 설정할 수 있습니다
-                        </p>
-                        <div className="flex justify-between">
-                            <button
-                            className="flex justify-center items-center border p-1 mr-2 rounded-full w-10 h-10 text-xl bg-Gray-100"
-                            onClick={handleDecreaseServiceCount}
-                            >
-                            -
-                            </button>
-                            <p className="border p-2 rounded-lg text-center w-72">{ServiceCount}회</p>
-                            <button
-                            className="flex justify-center items-center border p-1 ml-2 rounded-full w-10 h-10 text-xl bg-Gray-100"
-                            onClick={handleIncreaseServiceCount}
-                            >
-                            +
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div className='flex flex-col gap-2'>
-                        <div className='text-left'>담당 강사</div>
-                        <select defaultValue = "선택하세요" value={selectedTutor} onChange={handleSelect}>
-                            {empList.map((emp)=>(
-                                <option key={emp.id} value={emp.id}>{emp.name}</option>
-                            ))}
-                        </select>
-                    </div>
-
-                    <button className='border rounded px-4 py-3 hover:bg-[#2D62EA] hover:text-white ' onClick={onGrantTicket}>완료</button>
-            
+        <div className='flex gap-2'>
+            <div className='text-[16px] font-bold'>{ticketInfo?.title}</div>
+            <p className="text-right bg-Pri-50 text-xs px-2 py-1 rounded text-Pri-500">
+                {ticketInfo?.lessonType === 'GROUP' ? '그룹 수업' : '개인수업 - 1:1'}
+            </p>
         </div>
+
+        <div className='flex flex-col'>
+            <div className='text-left'>수강권명</div>
+            <div className='border rounded bg-[#F4F4F4] text-[#AFAFAF] px-4 py-2'>{ticketInfo?.title} </div>
+        </div>
+        
+        {/* 캘린더 라이브러리 잘 이용하면 버튼 이용해서 날짜설정 */}
+        <div className='flex flex-col mr-10'>
+            <div className='text-left'>유효기간(캘린더 라이브러리 이용하면 날짜 지정 편해질지도?)</div>
+            <div className='flex flex-col items-start'>
+                <input 
+                className='rounded border w-1/2 p-2' 
+                placeholder='0000-00-00'
+                value={start}
+                onChange={(e) => setStart(e.target.value)}/>
+                ~ 
+                <input 
+                className='rounded border w-1/2 p-2' 
+                placeholder='0000-00-00'
+                value={end}
+                onChange={(e) => setEnd(e.target.value)}/>
+            </div>
+        </div>
+
+        <div className='flex flex-col'>
+            <div className='text-left'>수강권 기간</div>
+            <div className='flex justify-between border rounded bg-[#F4F4F4] text-[#AFAFAF] px-4 py-2'>
+                <div>{ticketInfo?.defaultTerm}</div>
+                <div>{convertTermUnitToKorean(ticketInfo?.defaultTermUnit)}</div> 
+            </div>
+        </div>
+        <div className='flex flex-col'>
+            <div className='text-left'>기본 횟수</div>
+            <div className='flex justify-between border rounded bg-[#F4F4F4] text-[#AFAFAF] px-4 py-2'>
+                <div>{ticketInfo?.defaultCount}</div>
+                <div>회</div> 
+            </div>
+        </div>
+
+        <div className="flex items-start flex-col mb-4">
+            <p className="mr-2">서비스횟수(최대 {maxServiceCount}회)</p>
+            <p className="text-xs mb-1">
+                서비스로 부여되는 횟수를 제한하여 설정할 수 있습니다
+            </p>
+            <div className="flex justify-between">
+                <button
+                className="flex justify-center items-center border p-1 mr-2 rounded-full w-10 h-10 text-xl bg-Gray-100"
+                onClick={handleDecreaseServiceCount}
+                >
+                -
+                </button>
+                <p className="border p-2 rounded-lg text-center w-72">{ServiceCount}회</p>
+                <button
+                className="flex justify-center items-center border p-1 ml-2 rounded-full w-10 h-10 text-xl bg-Gray-100"
+                onClick={handleIncreaseServiceCount}
+                >
+                +
+                </button>
+            </div>
+        </div>
+        
+        <div className='flex flex-col gap-2'>
+            <div className='text-left'>담당 강사</div>
+            <select defaultValue = "선택하세요" value={selectedTutor} onChange={handleSelect}>
+                {empList.map((emp)=>(
+                    <option key={emp.id} value={emp.id}>{emp.name}</option>
+                ))}
+            </select>
+        </div>
+
+        <button className='border rounded px-4 py-3 hover:bg-[#2D62EA] hover:text-white ' onClick={onGrantTicket}>완료</button>
+          
+      </div>
     )
 
 }
