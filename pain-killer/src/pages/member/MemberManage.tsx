@@ -26,7 +26,7 @@ const MemberManage = () => {
 
       setEmpTotalCount(res.data.meta.totalCount);
       setEmpMembersManageList(res.data.datas);
-      console.log(res.data.message);
+      
       console.log(res);
     } catch (error: any) {
       alert(error);
