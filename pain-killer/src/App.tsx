@@ -39,6 +39,7 @@ import SearchPrivateCharge from './pages/StudyMangement/StudyTicket/SearchPrivat
 import ModMemInfo from './pages/member/ModMemInfo';
 import PwReset from './pages/Manager_login/ContactPwReset';
 import MemberTickets from './pages/member/MemberTickets';
+import MemberTicketsFix from './pages/member/MemberTicketsFix';
 
 function App() {
   return (
@@ -72,10 +73,16 @@ function App() {
           <Route path="/memberInfo/:useData" element={<MemDetail />} />
           <Route path="/addemp" element={<CreateEmp />} />
           <Route path="/changepwd" element={<ChangePwd />} />
-          <Route path="/createstudyticket/:ticketId" element={<CreateStudyTicket />} />
+          <Route
+            path="/createstudyticket/:ticketId"
+            element={<CreateStudyTicket />}
+          />
           <Route path="/studyticket" element={<StudyTicket />} />
           <Route path="/studyticketlist" element={<StudyTicketList />} />
-          <Route path="/searchprivatecharge/:ticketId" element={<SearchPrivateCharge />} />
+          <Route
+            path="/searchprivatecharge/:ticketId"
+            element={<SearchPrivateCharge />}
+          />
           {/* <Route path="/test" element={<WeekCalendar />} /> */}
 
           {/* 직원 역할 수정 페이지*/}
@@ -86,8 +93,12 @@ function App() {
           <Route path="/search" element={<SearchResult />} />
 
           {/* 회원 수강권 조회 */}
-          <Route path='/memtickets/:memberId' element = {<MemberTickets/>} />
-
+          <Route path="/memtickets/:memberId" element={<MemberTickets />} />
+          {/* 회원 수강권 수정 */}
+          <Route
+            path="/issued-tickets/:issuedTicketId"
+            element={<MemberTicketsFix />}
+          />
         </Routes>
       </Router>
     </div>
