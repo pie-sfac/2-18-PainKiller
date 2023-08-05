@@ -232,7 +232,7 @@ const MemberTickets = () => {
                 suspendedTickets.map((ticket) => (
                   <div key={ticket.id} className={`suspended-ticket`}>
                     <Link key={ticket.id} to={`/dtickets/${ticket.id}`}>
-                    <div className="flex justify-between border rounded-l-lg">
+                      <div className="flex justify-between border rounded-lg  border-solid border-[1.5px]">
                         <div className="flex flex-col gap-3 text-left">
                           <h1 className="font-extrabold mb-6">
                             {ticket.title}
@@ -251,9 +251,7 @@ const MemberTickets = () => {
                             </span>
                           </div>
                         </div>
-                        </div>
-                        </Link>
-                        <div className="p-4 flex flex-col justify-between bg-[#ebf1ff] text-[#2d62ea] text-sm rounded-r-lg border-y border-r">
+                        <div className="p-4 flex flex-col gap-3 bg-[#ebf1ff] text-[#2d62ea] text-sm">
                           <button
                             onClick={() => handleUnsuspendClick(ticket.id)}
                           >
@@ -265,6 +263,8 @@ const MemberTickets = () => {
                           </button>
                         </div>
                       </div>
+                    </Link>
+                  </div>
                 ))
               ) : (
                 <div>종료된 수강권이 없습니다.</div>
@@ -275,9 +275,9 @@ const MemberTickets = () => {
             <div className="mt-3 flex flex-col gap-4">
               {activeTickets.length > 0 ? (
                 activeTickets.map((ticket) => (
-                  <div key={ticket.id} className={` active-ticket flex`}>
+                  <div key={ticket.id} className={` active-ticket`}>
                     <Link key={ticket.id} to={`/dtickets/${ticket.id}`}>
-                      <div className="flex justify-between border rounded-l-lg">
+                      <div className="flex justify-between border rounded-lg border-solid border-[1.5px]">
                         <div className="p-4 flex flex-col gap-1 text-left">
                           <h1 className="font-extrabold mb-6">
                             {ticket.title}
@@ -295,9 +295,7 @@ const MemberTickets = () => {
                             </span>
                           </div>
                         </div>
-                        </div>
-                        </Link>
-                        <div className="p-4 flex flex-col justify-between bg-[#ebf1ff] text-[#2d62ea] text-sm rounded-r-lg border-y border-r">
+                        <div className="p-4 flex flex-col gap-3 bg-[#ebf1ff] text-[#2d62ea] text-sm">
                           <button onClick={() => handleSuspendClick(ticket.id)}>
                             수강권 일시중단
                           </button>
@@ -307,6 +305,8 @@ const MemberTickets = () => {
                           </button>
                         </div>
                       </div>
+                    </Link>
+                  </div>
                 ))
               ) : (
                 <div>이용중인 수강권이 없습니다.</div>
