@@ -11,16 +11,26 @@ import instance from '../../api/axios_interceptors';
 //수강권 조회페이지
 
 interface Ticket {
-  id: number;
-  title: string;
-  lessonType: string;
-  granted: number;
-  defaultCount: number;
-  duration: number;
-  defaultTerm: number;
-  defaultTermUnit: string;
-  isActive: boolean;
+  id: 0,
+  title: string,
+  lessonType: string,
+  defaultCount: number,
+  defaultTerm: number,
+  defaultTermUnit: string,
+  isActive: boolean,
+  maxServiceCount: number,
+  issuedTicketCount: number,
+  bookableLessons: BookableLessons[]
 }
+
+interface BookableLessons{
+  id: number,
+  type: string,
+  title: string,
+  duration: number,
+  maxGroupMember: number
+}
+
 export default function StudyList() {
   // const access_Token = localStorage.getItem('access_token')
   const [ticketData, setTicketData] = useState<Ticket[]>([]);
@@ -66,7 +76,7 @@ export default function StudyList() {
         // 수강권 생성 성공 시 처리할 코드
         console.log('수강권 출력 완료:', response.data);
         setTicketData(response.data.tickets); // API 응답 데이터를 ticketData 상태에 설정
-        setCount(response.data.tickets.filter((ticket) => ticket.lessonType === 'SINGLE').length); // 판매중인 수강권 갯수 설정
+        setCount(response.data.tickets.filter((ticket : Ticket) => ticket.lessonType === 'SINGLE').length); // 판매중인 수강권 갯수 설정
         setLoading(false);
       } catch (error) {
         // 오류 처리
@@ -89,7 +99,7 @@ export default function StudyList() {
   }
 
   // 영어값을 한글로 변환하는 함수
-  function convertTermUnitToKorean(termUnit) {
+  function convertTermUnitToKorean(termUnit : any) {
     switch (termUnit) {
       case "MONTH":
         return "개월";
@@ -208,7 +218,7 @@ export default function StudyList() {
                   <div className="flex justify-between items-end">
                     <div>
                       <p className="text-left mt-2 mb-9">
-                        <span className="text-Gray-400 mr-2">부여</span> {ticket.granted}건
+                        <span className="text-Gray-400 mr-2">부여</span> {ticket.issuedTicketCount}건
                       </p>
                       <p className="text-left">
                         <span className="text-Gray-400 mr-2">수강권 횟수</span> {ticket.defaultCount}회
@@ -247,7 +257,7 @@ export default function StudyList() {
                   <div className="flex justify-between items-end">
                     <div>
                       <p className="text-left mt-2 mb-9">
-                        <span className="text-Gray-400 mr-2">부여</span> <span className="text-Gray-400">{deactivatedTicket.granted}건</span>
+                        <span className="text-Gray-400 mr-2">부여</span> <span className="text-Gray-400">{deactivatedTicket.issuedTicketCount}건</span>
                       </p>
                       <p className="text-left">
                         <span className="text-Gray-400 mr-2">수강권 횟수</span> <span className="text-Gray-400">{deactivatedTicket.defaultCount}회</span>

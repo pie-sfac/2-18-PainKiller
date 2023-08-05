@@ -111,26 +111,18 @@ const MemberTickets = () => {
   const handleRefundClick = async (ticketId: number) => {
     try {
       await instance.post(`/issued-tickets/${ticketId}/refund`);
-      setMemtickets((prevTickets) =>
-        prevTickets.map((ticket) => {
-          if (ticket.id === ticketId) {
-            return { ...ticket, isRefunded: true };
-          }
-          return ticket;
-        }),
-      );
-      localStorage.setItem(`refundStatus_${ticketId}`, 'refunded');
-      console.log('수강권이 환불되었습니다.');
-    } catch (error) {
-      console.error('수강권 환불 오류:', error);
-    }
-  };
+      console.log('수강권 환불이 완료되었습니다.');
 
-  const fetchMemberTickets = async () => {
-    try {
-      const response = await instance.get(`/members/${memberId}/issued-tickets`);
-      setMemtickets(response.data.issuedTickets);
-      console.log(response);
+      // 환불이 성공적으로 이뤄졌으면 해당 수강권을 memTickets에서 삭제
+      setMemtickets((prevTickets) =>
+        prevTickets.filter((ticket) => ticket.id !== ticketId),
+      );
+
+      // 업데이트된 상태를 로컬 스토리지에 저장 (로컬 스토리지에 저장할 때 API로 받은 수강권 상태를 저장)
+      const updatedTickets = memTickets.filter(
+        (ticket) => ticket.id !== ticketId,
+      );
+      saveTicketsToLocalStorage(updatedTickets);
     } catch (error) {
       // API 호출 실패 시 오류 처리
       console.error('수강권 조회 오류:', error);
@@ -140,6 +132,47 @@ const MemberTickets = () => {
   useEffect(() => {
     fetchMemberTickets();
   }, [memberId]);
+
+    const storedTickets = loadTicketsFromLocalStorage();
+    setMemtickets(storedTickets);
+  }, []);
+  // 현재 눌린 버튼 상태
+  const [activeButton, setActiveButton] = useState('INUSE');
+  // 수강권 상태를 토글하는 변수
+  const [showSuspended, setShowSuspended] = useState(false);
+
+  // 이용중 수강권 리스트
+  const [activeTickets, setActiveTickets] = useState<IIssuedTicket[]>([]);
+  // 종료됨 수강권 리스트
+  const [suspendedTickets, setSuspendedTickets] = useState<IIssuedTicket[]>([]);
+
+  // 이용중 버튼 클릭 시 이벤트 핸들러
+  const handleInUseClick = () => {
+    setActiveButton('INUSE');
+    setShowSuspended(false);
+  };
+  // 종료됨 버튼 클릭 시 이벤트 핸들러
+  const handleEndedClick = () => {
+    setActiveButton('ENDED');
+    setShowSuspended(true);
+  };
+
+  useEffect(() => {
+    // 수강권 리스트를 이용중과 종료됨으로 분류하여 업데이트
+    const activeTicketsList: IIssuedTicket[] = [];
+    const suspendedTicketsList: IIssuedTicket[] = [];
+
+    memTickets.forEach((ticket) => {
+      if (ticket.isSuspended) {
+        suspendedTicketsList.push(ticket);
+      } else {
+        activeTicketsList.push(ticket);
+      }
+    });
+
+    setActiveTickets(activeTicketsList);
+    setSuspendedTickets(suspendedTicketsList);
+  }, [memTickets]);
 
   return (
     <div>
@@ -153,7 +186,13 @@ const MemberTickets = () => {
             <p className="text-lg ml-2">수강권</p>
           </div>
           <div className="flex">
-            <span>부여하기</span>
+            <Link
+              to={`/centerticket`}
+              state={{ id: memberId }}
+              className="flex items-center"
+            >
+              <span>부여하기</span>
+            </Link>
           </div>
         </nav>
       </header>
@@ -163,47 +202,117 @@ const MemberTickets = () => {
         <div>등록된 수강권이 없습니다.</div>
       ) : (
         <div>
-          <div className="flex gap-3">
-            <button onClick={handleSellingClick}>이용중</button>
-            <button onClick={handleDeactivatedClick}>종료됨</button>
+          <div className="flex">
+            <button
+              className={`py-2 px-3 font-semibold ${
+                activeButton === 'INUSE'
+                  ? 'text-Pri-300 border-b-2 border-Pri-300'
+                  : 'text-Gray-300 border-b-2 border-Gray-300'
+              }`}
+              onClick={handleInUseClick}
+            >
+              이용중
+            </button>
+            <button
+              className={`py-2 px-3 font-semibold ${
+                activeButton === 'ENDED'
+                  ? 'text-Pri-300 border-b-2 border-Pri-300'
+                  : 'text-Gray-300 border-b-2 border-Gray-300'
+              }`}
+              onClick={handleEndedClick}
+            >
+              종료됨
+            </button>
           </div>
-          {activeButton === 'deactivated' && renderNoDeactivatedTicketsMessage()}
-          <div className="flex flex-col gap-5">
-            {getFilteredTickets().map((ticket) => (
-              <div
-                key={ticket.id}
-                className={`flex justify-between border rounded p-2 ${ticket.isSuspended ? 'suspended-ticket' : 'active-ticket'
-                  }`}
-              >
-                <div className="flex flex-col gap-3">
-                  <div>수강권 이름 : {ticket.title}</div>
-                  <div>잔여횟수 : {ticket.remainingCount}</div>
-                  <div>
-                    유효기간 : {ticket.startAt} ~ {ticket.endAt}
-                  </div>
-                </div>
-                <div className="flex flex-col gap-3">
-                  {ticket.isSuspended ? (
-                    <button onClick={() => handleUnsuspendClick(ticket.id)}>
-                      수강권 일시중단 해제
-                    </button>
-                  ) : (
-                    <button onClick={() => handleSuspendClick(ticket.id)}>
-                      수강권 일시중단
-                    </button>
-                  )}
-                  <button>수강권 양도</button>
-                  {!ticket.isRefunded ? (
-                    <button onClick={() => handleRefundClick(ticket.id)}>
-                      수강권 환불
-                    </button>
-                  ) : (
-                    <span>환불</span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+
+          {showSuspended ? (
+            // 종료됨 수강권 출력
+            <div className="mt-3 flex flex-col gap-4">
+              {suspendedTickets.length > 0 ? (
+                suspendedTickets.map((ticket) => (
+                  <div key={ticket.id} className={`suspended-ticket`}>
+                    <Link key={ticket.id} to={`/dtickets/${ticket.id}`}>
+                    <div className="flex justify-between border rounded-l-lg">
+                        <div className="flex flex-col gap-3 text-left">
+                          <h1 className="font-extrabold mb-6">
+                            {ticket.title}
+                          </h1>
+                          <div className="text-sm text-[#aeaeae]">
+                            잔여횟수
+                            <span className="ml-1 text-[#1d1d1d]">
+                              {ticket.remainingCount}회
+                            </span>
+                          </div>
+
+                          <div className="text-sm text-[#aeaeae]">
+                            유효기간
+                            <span className="ml-1 text-[#1d1d1d]">
+                              {ticket.startAt} ~ {ticket.endAt}
+                            </span>
+                          </div>
+                        </div>
+                        </div>
+                        </Link>
+                        <div className="p-4 flex flex-col justify-between bg-[#ebf1ff] text-[#2d62ea] text-sm rounded-r-lg border-y border-r">
+                          <button
+                            onClick={() => handleUnsuspendClick(ticket.id)}
+                          >
+                            수강권 일시중단 해제
+                          </button>
+                          <button>수강권 양도</button>
+                          <button onClick={() => handleRefundClick(ticket.id)}>
+                            수강권 환불
+                          </button>
+                        </div>
+                      </div>
+                ))
+              ) : (
+                <div>종료된 수강권이 없습니다.</div>
+              )}
+            </div>
+          ) : (
+            // 이용중 수강권 출력
+            <div className="mt-3 flex flex-col gap-4">
+              {activeTickets.length > 0 ? (
+                activeTickets.map((ticket) => (
+                  <div key={ticket.id} className={` active-ticket flex`}>
+                    <Link key={ticket.id} to={`/dtickets/${ticket.id}`}>
+                      <div className="flex justify-between border rounded-l-lg">
+                        <div className="p-4 flex flex-col gap-1 text-left">
+                          <h1 className="font-extrabold mb-6">
+                            {ticket.title}
+                          </h1>
+                          <div className="text-sm text-[#aeaeae]">
+                            잔여횟수
+                            <span className="ml-1 text-[#1d1d1d]">
+                              {ticket.remainingCount}회
+                            </span>
+                          </div>
+                          <div className="text-sm text-[#aeaeae]">
+                            유효기간
+                            <span className="ml-1 text-[#1d1d1d]">
+                              {ticket.startAt} ~ {ticket.endAt}
+                            </span>
+                          </div>
+                        </div>
+                        </div>
+                        </Link>
+                        <div className="p-4 flex flex-col justify-between bg-[#ebf1ff] text-[#2d62ea] text-sm rounded-r-lg border-y border-r">
+                          <button onClick={() => handleSuspendClick(ticket.id)}>
+                            수강권 일시중단
+                          </button>
+                          <button>수강권 양도</button>
+                          <button onClick={() => handleRefundClick(ticket.id)}>
+                            수강권 환불
+                          </button>
+                        </div>
+                      </div>
+                ))
+              ) : (
+                <div>이용중인 수강권이 없습니다.</div>
+              )}
+            </div>
+          )}
 
           {/* 일시중단 모달 표시 */}
           <SuspendModal
