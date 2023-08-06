@@ -145,7 +145,8 @@ const GrantTicket = () => {
           
             console.log(res);
 
-
+            navigate('/memberInfo');
+            
         } catch (error : any) {
           alert(error);
         }
