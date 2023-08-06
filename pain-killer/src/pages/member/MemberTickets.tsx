@@ -33,45 +33,61 @@ const MemberTickets = () => {
     navigate(-1);
   };
 
-  // 해당 회원에게 부여된 수강권 담을 배열
   const [memTickets, setMemtickets] = useState<IIssuedTicket[]>([]);
-
-  // 회원 수강권 조회 api
-  const getMemTickets = async () => {
-    const response = await instance.get(`/members/${memberId}/issued-tickets`);
-
-    setMemtickets(response.data.issuedTickets);
-    console.log(response);
-  };
-  useEffect(() => {
-    getMemTickets();
-  }, []);
-
-  // 경원 구현 zone
-  // 모달의 표시 여부를 관리하는 상태
+  const [activeButton, setActiveButton] = useState('selling');
   const [showSuspendModal, setShowSuspendModal] = useState(false);
   const [selectedTicketId, setSelectedTicketId] = useState<number | null>(null);
 
-  // 일시 중단을 확인하고 처리하는 함수
+  const handleSellingClick = () => {
+    setActiveButton('selling');
+  };
+
+  const handleDeactivatedClick = () => {
+    setActiveButton('deactivated');
+  };
+
+  const getFilteredTickets = () => {
+    if (activeButton === 'selling') {
+      return memTickets.filter((ticket) => !ticket.isCanceled && !ticket.isSuspended);
+    } else {
+      return memTickets.filter((ticket) => ticket.isCanceled);
+    }
+  };
+
+  const getDeactivatedTickets = () => {
+    return memTickets.filter((ticket) => ticket.isCanceled);
+  };
+
+  const renderNoDeactivatedTicketsMessage = () => {
+    const deactivatedTickets = getDeactivatedTickets();
+    if (deactivatedTickets.length === 0) {
+      return <div>종료된 수강권이 없습니다.</div>;
+    }
+    return null;
+  };
+
   const handleSuspendConfirmation = async () => {
     if (selectedTicketId) {
       try {
-        // 일시 중단을 API로 호출하고, 필요한 경우 상태를 업데이트
         await instance.post(`/issued-tickets/${selectedTicketId}/suspend`);
+        setMemtickets((prevTickets) =>
+          prevTickets.map((ticket) => {
+            if (ticket.id === selectedTicketId) {
+              return { ...ticket, isSuspended: true };
+            }
+            return ticket;
+          }),
+        );
       } catch (error) {
         // API 호출 실패 시 오류 처리
       }
+      console.log('수강권이 일시중단 되었습니다');
     }
-    console.log('수강권이 일시중단 되었습니다');
-
-    // 모달을 닫기
     setShowSuspendModal(false);
   };
 
-  // 일시중단을 해제하는 함수
   const handleUnsuspendClick = async (ticketId: number) => {
     try {
-      // 일시중단 해제를 API로 호출하고, 필요한 경우 상태를 업데이트
       await instance.post(`/issued-tickets/${ticketId}/unsuspend`);
       setMemtickets((prevTickets) =>
         prevTickets.map((ticket) => {
@@ -87,15 +103,13 @@ const MemberTickets = () => {
     console.log('수강권 일시중단이 해제되었습니다.');
   };
 
-  // "수강권 일시중단" 버튼 클릭 처리 함수
   const handleSuspendClick = (ticketId: number) => {
     setSelectedTicketId(ticketId);
     setShowSuspendModal(true);
   };
-  // 수강권 환불 처리 함수
+
   const handleRefundClick = async (ticketId: number) => {
     try {
-      // 수강권 환불을 API로 호출하고, 필요한 경우 상태를 업데이트
       await instance.post(`/issued-tickets/${ticketId}/refund`);
       console.log('수강권 환불이 완료되었습니다.');
 
@@ -111,26 +125,13 @@ const MemberTickets = () => {
       saveTicketsToLocalStorage(updatedTickets);
     } catch (error) {
       // API 호출 실패 시 오류 처리
+      console.error('수강권 조회 오류:', error);
     }
   };
 
-  // 상태를 로컬 스토리지에 저장하고 초기화하는 함수
-  const saveTicketsToLocalStorage = (tickets: IIssuedTicket[]) => {
-    localStorage.setItem('memTickets', JSON.stringify(tickets));
-  };
-
-  const loadTicketsFromLocalStorage = () => {
-    const storedTickets = localStorage.getItem('memTickets');
-    if (storedTickets) {
-      return JSON.parse(storedTickets);
-    }
-    return [];
-  };
-
-  // useEffect를 사용하여 수강권 정보를 로컬 스토리지와 동기화
   useEffect(() => {
-    // API로부터 받은 수강권 정보가 있을 경우 로컬 스토리지로부터 로드하지 않음
-    if (memTickets.length > 0) return;
+    fetchMemberTickets();
+  }, [memberId]);
 
     const storedTickets = loadTicketsFromLocalStorage();
     setMemtickets(storedTickets);
@@ -231,7 +232,7 @@ const MemberTickets = () => {
                 suspendedTickets.map((ticket) => (
                   <div key={ticket.id} className={`suspended-ticket`}>
                     <Link key={ticket.id} to={`/dtickets/${ticket.id}`}>
-                    <div className="flex justify-between border rounded-l-lg">
+                      <div className="flex justify-between border rounded-lg  border-solid border-[1.5px]">
                         <div className="flex flex-col gap-3 text-left">
                           <h1 className="font-extrabold mb-6">
                             {ticket.title}
@@ -250,9 +251,7 @@ const MemberTickets = () => {
                             </span>
                           </div>
                         </div>
-                        </div>
-                        </Link>
-                        <div className="p-4 flex flex-col justify-between bg-[#ebf1ff] text-[#2d62ea] text-sm rounded-r-lg border-y border-r">
+                        <div className="p-4 flex flex-col gap-3 bg-[#ebf1ff] text-[#2d62ea] text-sm">
                           <button
                             onClick={() => handleUnsuspendClick(ticket.id)}
                           >
@@ -264,6 +263,8 @@ const MemberTickets = () => {
                           </button>
                         </div>
                       </div>
+                    </Link>
+                  </div>
                 ))
               ) : (
                 <div>종료된 수강권이 없습니다.</div>
@@ -274,9 +275,9 @@ const MemberTickets = () => {
             <div className="mt-3 flex flex-col gap-4">
               {activeTickets.length > 0 ? (
                 activeTickets.map((ticket) => (
-                  <div key={ticket.id} className={` active-ticket flex`}>
+                  <div key={ticket.id} className={` active-ticket`}>
                     <Link key={ticket.id} to={`/dtickets/${ticket.id}`}>
-                      <div className="flex justify-between border rounded-l-lg">
+                      <div className="flex justify-between border rounded-lg border-solid border-[1.5px]">
                         <div className="p-4 flex flex-col gap-1 text-left">
                           <h1 className="font-extrabold mb-6">
                             {ticket.title}
@@ -294,9 +295,7 @@ const MemberTickets = () => {
                             </span>
                           </div>
                         </div>
-                        </div>
-                        </Link>
-                        <div className="p-4 flex flex-col justify-between bg-[#ebf1ff] text-[#2d62ea] text-sm rounded-r-lg border-y border-r">
+                        <div className="p-4 flex flex-col gap-3 bg-[#ebf1ff] text-[#2d62ea] text-sm">
                           <button onClick={() => handleSuspendClick(ticket.id)}>
                             수강권 일시중단
                           </button>
@@ -306,6 +305,8 @@ const MemberTickets = () => {
                           </button>
                         </div>
                       </div>
+                    </Link>
+                  </div>
                 ))
               ) : (
                 <div>이용중인 수강권이 없습니다.</div>
