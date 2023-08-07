@@ -12,7 +12,7 @@ import StudyList from './pages/StudyMangement/StudyList';
 import CreateStudy from './pages/StudyMangement/CreateStudy';
 import StudyDetails from './pages/StudyMangement/StudyDetails';
 
-import WeekCalendar from './components/week-calendar';
+import TestCalendar from './components/calendar/days-calendar';
 import EmpDetail from './pages/center/EmpDetail';
 import CreateEmp from './pages/center/CreateEmp';
 import ChangePassword from './components/changePassword';
@@ -88,7 +88,8 @@ function App() {
             path="/searchprivatecharge/:ticketId"
             element={<SearchPrivateCharge />}
           />
-          {/* <Route path="/test" element={<WeekCalendar />} /> */}
+          {/* calenar test */}
+          <Route path="/calendar" element={<TestCalendar />} />
 
           {/* 직원 역할 수정 페이지*/}
           <Route path="/modrole/:userId" element={<ModRole />} />
@@ -100,20 +101,19 @@ function App() {
           {/* 회원 수강권 조회 */}
           <Route path="/memtickets/:memberId" element={<MemberTickets />} />
           {/* 회원 수강권 상세 */}
-          <Route path="dtickets/:ticketId" element = {<DetailMemberTickets />} />
+          <Route path="dtickets/:ticketId" element={<DetailMemberTickets />} />
           {/* 수강권 부여 내역 */}
-          <Route path='/grant-list/:ticketId' element = {<GrantList />} />
+          <Route path="/grant-list/:ticketId" element={<GrantList />} />
           {/* 회원에게 수강권 부여 전 판매중인 센터 티겟 목록 */}
-          <Route path='/centerticket' element = {<CenterTickets/>}/>
+          <Route path="/centerticket" element={<CenterTickets />} />
           {/* 회원 수강권 부여 페이지*/}
-          <Route path='/grantticket/:ticketId' element = {<GrantTicket/>}/>
-      
+          <Route path="/grantticket/:ticketId" element={<GrantTicket />} />
+
           {/* 회원 수강권 수정 */}
           <Route
             path="/issued-tickets/:issuedTicketId"
             element={<MemberTicketsFix />}
           />
-          
         </Routes>
       </Router>
     </div>
