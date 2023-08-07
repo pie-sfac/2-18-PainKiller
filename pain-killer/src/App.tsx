@@ -46,6 +46,8 @@ import MemberTicketsFix from './pages/member/MemberTicketsFix';
 import GrantList from './pages/StudyMangement/GrantList';
 import DetailMemberTickets from './pages/member/MemberTicketsDetail';
 
+import SchduleManger from './pages/schedule/SchduleManager';
+
 function App() {
   return (
     // 계속 불러올 컴포넌트는 components 폴더에
@@ -88,6 +90,12 @@ function App() {
             path="/searchprivatecharge/:ticketId"
             element={<SearchPrivateCharge />}
           />
+          <Route
+            path="/schedulemanager"
+            element={<SchduleManger />}
+          />
+
+
           {/* <Route path="/test" element={<WeekCalendar />} /> */}
 
           {/* 직원 역할 수정 페이지*/}
