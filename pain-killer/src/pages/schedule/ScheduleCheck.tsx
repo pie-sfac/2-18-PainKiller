@@ -1,5 +1,5 @@
-import BackImage from '../img/Back_24px.svg';
-import Profile from '../assets/Profile_24px.svg';
+import BackImage from '../../img/Back_24px.svg';
+import Profile from '../../assets/Profile_24px.svg';
 
 const ScheduleCheck = () => {
 

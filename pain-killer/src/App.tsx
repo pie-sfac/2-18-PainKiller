@@ -45,6 +45,8 @@ import GrantTicket from './pages/member/GrantTicket';
 import MemberTicketsFix from './pages/member/MemberTicketsFix';
 import GrantList from './pages/StudyMangement/GrantList';
 import DetailMemberTickets from './pages/member/MemberTicketsDetail';
+import ScheduleCheck from './pages/schedule/ScheduleCheck';
+import CreateCounceling from './pages/schedule/CreateCounceling';
 
 function App() {
   return (
@@ -113,7 +115,10 @@ function App() {
             path="/issued-tickets/:issuedTicketId"
             element={<MemberTicketsFix />}
           />
-          
+
+          <Route path='/councelingedit' element = {<CreateCounceling/>}/>
+          <Route path='/councelingcheck' element = {<ScheduleCheck/>}/>
+
         </Routes>
       </Router>
     </div>
