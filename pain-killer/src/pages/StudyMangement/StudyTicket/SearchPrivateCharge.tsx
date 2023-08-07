@@ -51,7 +51,7 @@ export default function SearchPrivateCharge() {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
   // const [selectedMemberName, setSelectedMemberName] = useState<string>('');
-  const { ticketId } = useParams<TicketParams>(); // 티켓 ID 동적으로 받아옴
+  const { ticketId } = useParams(); // 티켓 ID 동적으로 받아옴
 
   useEffect(() => {
     // API에서 데이터를 가져와서 searchResults 상태를 업데이트하는 함수
@@ -74,11 +74,10 @@ export default function SearchPrivateCharge() {
     }
   }, [searchQuery]);
 
-  const handleSelectMember = (memberId: number, memberName: string ) => {
-    // 이전 페이지로 돌아가면서 선택한 memberId를 전달
-    navigate(`/createstudyticket/${ticketId}?selectedMemberId=${memberId}&selectedMemberName=${encodeURIComponent(memberName)}`);
+  const handleSelectMember = (memberId, memberName) => {
     
-  }
+    navigate(`/schduleManger/?selectedMemberId=${memberId}&selectedMemberName=${encodeURIComponent(memberName)}`);
+  };
 
   return (
     <>

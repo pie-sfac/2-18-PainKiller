@@ -46,6 +46,9 @@ import MemberTicketsFix from './pages/member/MemberTicketsFix';
 import GrantList from './pages/StudyMangement/GrantList';
 import DetailMemberTickets from './pages/member/MemberTicketsDetail';
 
+import SchduleManger from './pages/schedule/SchduleManager';
+import MemberSearch from './pages/member/MemberSearch';
+
 function App() {
   return (
     // 계속 불러올 컴포넌트는 components 폴더에
@@ -85,8 +88,16 @@ function App() {
           <Route path="/studyticket" element={<StudyTicket />} />
           <Route path="/studyticketlist" element={<StudyTicketList />} />
           <Route
-            path="/searchprivatecharge/:ticketId"
+            path="/searchprivatecharge"
             element={<SearchPrivateCharge />}
+          />
+          <Route
+            path="/membersearch"
+            element={<MemberSearch />}
+          />
+          <Route
+            path="/schduleManger"
+            element={<SchduleManger />}
           />
           {/* <Route path="/test" element={<WeekCalendar />} /> */}
 
