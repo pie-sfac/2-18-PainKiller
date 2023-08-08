@@ -56,21 +56,20 @@ const MemberSearch: React.FC<Props> = ({
         `/search?query=${searchText}`,
       );
       setSearchResults(response.data.members);
+      console.log('여긴가?',selectedMember)
     } catch (error) {
       console.error('회원 검색 에러:', error);
     }
   };
 
+  
   const handleSelect = (member: Member) => {
-    // 선택된 회원을 부모 컴포넌트로 전달합니다.
+    // 선택된 회원을 부모 컴포넌트로 전달
     onSelectMember(member);
-
-    // 현재 창을 닫습니다 (새 창에서 열려있는 경우).
-    window.close();
+    console.log('회원 아이디:' , member.id)
   };
 
   useEffect(() => {
-    // 부모 컴포넌트에서 제공된 초기 선택된 회원이 있다면 설정합니다.
     if (initialSelectedMemberId && initialSelectedMemberName) {
       setSelectedMember({
         id: initialSelectedMemberId,
@@ -81,17 +80,19 @@ const MemberSearch: React.FC<Props> = ({
   }, [initialSelectedMemberId, initialSelectedMemberName]);
 
   return (
-    <div>
+    <div className='mt-1'>
       <input
         type="text"
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
+        className='border border-Gray-200 rounded-xl p-1.5'
+        placeholder='회원을 검색하세요'
       />
-      <button onClick={handleSearch}>검색</button>
+      <button onClick={handleSearch} className='bg-Pri-50 text-Pri-500 py-1 px-1.5 rounded-lg'>검색</button>
       <ul>
         {searchResults.map((member) => (
           <li key={member.id} onClick={() => handleSelect(member)}>
-            {member.name}
+            {member.name} {member.id}
           </li>
         ))}
       </ul>
