@@ -229,10 +229,10 @@ const MemberTickets = () => {
             <div className="mt-3 flex flex-col gap-4">
               {suspendedTickets.length > 0 ? (
                 suspendedTickets.map((ticket) => (
-                  <div key={ticket.id} className={`suspended-ticket`}>
+                  <div key={ticket.id} className={`suspended-ticket flex`}>
                     <Link key={ticket.id} to={`/dtickets/${ticket.id}`}>
-                    <div className="flex justify-between border rounded-l-lg">
-                        <div className="flex flex-col gap-3 text-left">
+                      <div className="flex justify-between border rounded-l-lg">
+                        <div className="p-4 flex flex-col gap-1 text-left">
                           <h1 className="font-extrabold mb-6">
                             {ticket.title}
                           </h1>
@@ -250,20 +250,18 @@ const MemberTickets = () => {
                             </span>
                           </div>
                         </div>
-                        </div>
-                        </Link>
-                        <div className="p-4 flex flex-col justify-between bg-[#ebf1ff] text-[#2d62ea] text-sm rounded-r-lg border-y border-r">
-                          <button
-                            onClick={() => handleUnsuspendClick(ticket.id)}
-                          >
-                            수강권 일시중단 해제
-                          </button>
-                          <button>수강권 양도</button>
-                          <button onClick={() => handleRefundClick(ticket.id)}>
-                            수강권 환불
-                          </button>
-                        </div>
                       </div>
+                    </Link>
+                    <div className="p-4 flex flex-col justify-between bg-[#ebf1ff] text-[#2d62ea] text-sm rounded-r-lg border-y border-r">
+                      <button onClick={() => handleUnsuspendClick(ticket.id)}>
+                        수강권 <br></br> 일시중단 해제
+                      </button>
+                      <button>수강권 양도</button>
+                      <button onClick={() => handleRefundClick(ticket.id)}>
+                        수강권 환불
+                      </button>
+                    </div>
+                  </div>
                 ))
               ) : (
                 <div>종료된 수강권이 없습니다.</div>
@@ -294,18 +292,18 @@ const MemberTickets = () => {
                             </span>
                           </div>
                         </div>
-                        </div>
-                        </Link>
-                        <div className="p-4 flex flex-col justify-between bg-[#ebf1ff] text-[#2d62ea] text-sm rounded-r-lg border-y border-r">
-                          <button onClick={() => handleSuspendClick(ticket.id)}>
-                            수강권 일시중단
-                          </button>
-                          <button>수강권 양도</button>
-                          <button onClick={() => handleRefundClick(ticket.id)}>
-                            수강권 환불
-                          </button>
-                        </div>
                       </div>
+                    </Link>
+                    <div className="p-4 flex flex-col justify-between bg-[#ebf1ff] text-[#2d62ea] text-sm rounded-r-lg border-y border-r">
+                      <button onClick={() => handleSuspendClick(ticket.id)}>
+                        수강권 일시중단
+                      </button>
+                      <button>수강권 양도</button>
+                      <button onClick={() => handleRefundClick(ticket.id)}>
+                        수강권 환불
+                      </button>
+                    </div>
+                  </div>
                 ))
               ) : (
                 <div>이용중인 수강권이 없습니다.</div>

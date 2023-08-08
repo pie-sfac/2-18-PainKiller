@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import BackImage from '../../img/Back_24px.svg';
 import instance from '../../api/axios_interceptors';
 //회원상세
@@ -72,9 +72,10 @@ const DetailMemberTickets = () => {
               <img src={BackImage} alt="Back" />
               <p className="text-lg ml-2">수강권 상세</p>
             </div>
-            <div className="flex">
-              <span>편집</span>
-            </div>
+            <Link to={`/issued-tickets/${ticketId}`}>
+              {' '}
+              <button>편집</button>
+            </Link>
           </nav>
         </header>
 
@@ -85,14 +86,17 @@ const DetailMemberTickets = () => {
           </p>
         </div>
 
-        <div className="font-bold text-left mt-8 text-Gray-800 text-lg mb-2">수강권 정보</div>
+        <div className="font-bold text-left mt-8 text-Gray-800 text-lg mb-2">
+          수강권 정보
+        </div>
 
         <div className="rounded-lg border border-Gray-200 py-5 px-6">
           <div className="flex flex-col gap-3 justify-start items-start">
-            
-              <p>기본 횟수 :{' '}
-              <span className="font-bold">{deTickets?.defaultCount}회</span></p>
-            
+            <p>
+              기본 횟수 :{' '}
+              <span className="font-bold">{deTickets?.defaultCount}회</span>
+            </p>
+
             <p>
               서비스 횟수 :{' '}
               <span className="font-bold">{deTickets?.serviceCount}회</span>

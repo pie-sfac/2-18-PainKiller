@@ -142,15 +142,17 @@ const ModMemInfo = () => {
 
     try {
       //put 부분(수정하는 부분)
-      const response = await instance.put(`/members/${userId}`, {
-        name: memName,
-        BirthDate: memBirthdate,
-        phone: memPhone,
-        Sex: memSex,
-        Job: selectJob.option,
-        acquisitionFunnel: selectPath.option,
-      });
-
+      // const response = await instance.put(`/members/${userId}`, {
+      //   name: memName,
+      //   BirthDate: memBirthdate,
+      //   phone: memPhone,
+      //   Sex: memSex,
+      //   Job: selectJob.option,
+      //   acquisitionFunnel: selectPath.option,
+      // });
+      console.log(
+        `${memName}, ${memBirthdate}, ${memPhone}, ${memSex}, ${selectJob}. ${selectPath} `,
+      );
       console.log(response);
     } catch (error) {
       alert(error);

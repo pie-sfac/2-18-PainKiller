@@ -15,6 +15,7 @@
     "@heroicons/react": "^2.0.18",
     "@material-tailwind/react": "^2.0.8",
     "axios": "^1.4.0",
+    "moment-timezone": "^0.5.43",
     "react": "^18.2.0",
     "react-calendar": "^4.4.0",
     "react-datepicker": "^4.16.0",
