@@ -164,3 +164,13 @@ abbr[title] {
 .react-calendar--selectRange .react-calendar__tile--hover {
   background-color: #424242;
 }
+/* schedulModal */
+.fc .fc-button-primary {
+  border: none;
+}
+.fc-view-harness {
+  height: 400px !important;
+}
+.fc-scrollgrid-sync-table {
+  height: 400px;
+}

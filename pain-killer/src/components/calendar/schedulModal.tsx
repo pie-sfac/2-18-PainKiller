@@ -7,7 +7,7 @@ export default function SchedulModal({ setSchedule }: PropsType) {
   };
 
   return (
-    <div className="w-full h-full fixed top-0 left-0 bg-[#000000bc]">
+    <div className="z-10 w-full h-full fixed top-0 left-0 bg-[#000000bc]">
       <div className="w-3/4 px-6 py-5 absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] bg-white rounded-[10px]">
         <div className="mb-9 flex">
           <div className="text-left flex-1">
@@ -30,10 +30,10 @@ export default function SchedulModal({ setSchedule }: PropsType) {
         </div>
         <div className="flex flex-col text-left">
           <div className="mb-2 px-4 py-5 rounded-[10px] border-solid border-[1.5px] border-[#6691ff]">
-            <Link to='/createPrivate'>
-            <p className="text-sm text-bold text-[#6691ff]">개인 수업</p>
-            <p className="text-xs text-[#505050]">개인 수업 suppoting msg</p>
-            <object className="mt-3 float-right" data={journalPath}></object>
+            <Link to="/createPrivate">
+              <p className="text-sm text-bold text-[#6691ff]">개인 수업</p>
+              <p className="text-xs text-[#505050]">개인 수업 suppoting msg</p>
+              <object className="mt-3 float-right" data={journalPath}></object>
             </Link>
           </div>
           <div className="mb-2 px-4 py-5 rounded-[10px] border-solid border-[1.5px] border-[#cfcfcf]">
