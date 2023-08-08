@@ -47,6 +47,7 @@ import GrantList from './pages/StudyMangement/GrantList';
 import DetailMemberTickets from './pages/member/MemberTicketsDetail';
 import ScheduleCheck from './pages/schedule/ScheduleCheck';
 import CreateCounceling from './pages/schedule/CreateCounceling';
+import CreatePrivate from './pages/schedule/CreatePrivate';
 
 function App() {
   return (
@@ -115,6 +116,11 @@ function App() {
           <Route
             path="/issued-tickets/:issuedTicketId"
             element={<MemberTicketsFix />}
+          />
+          {/* 개인수업 일정등록 */}
+          <Route
+            path="/createPrivate"
+            element={<CreatePrivate />}
           />
 
           <Route path="/councelingedit" element={<CreateCounceling />} />
