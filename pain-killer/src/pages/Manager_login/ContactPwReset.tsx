@@ -9,6 +9,10 @@ import BackImage from '../../img/Back_24px.svg'
 
 export default function PwReset(){
   const navigate = useNavigate();
+
+  const onPrevious = () => {
+    navigate(-1);
+  };
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -100,7 +104,7 @@ export default function PwReset(){
     <>
       <header className="bg-white border-b border-t-neutral-100">
         <nav className="flex p-5">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center cursor-pointer" onClick={onPrevious}>
             <img src={BackImage} alt="Back" />
             <p className="text-lg ml-2">비밀번호 변경</p>
           </div>
