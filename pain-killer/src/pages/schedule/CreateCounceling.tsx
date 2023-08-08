@@ -5,6 +5,7 @@ import ProfileIcon from '../../assets/Profile_24px.svg'
 import DatePicker, { registerLocale } from 'react-datepicker';
 import ko from 'date-fns/locale/ko'
 import React, { useState } from 'react';
+import moment from 'moment-timezone';
 import instance from '../../api/axios_interceptors';
 
 registerLocale("ko", ko);
@@ -19,6 +20,13 @@ interface ITutorList {
 
 const CreateCounceling = () => {
     
+    // 이름, 전화번호, 메모
+    const [clientName, setClientName] = useState("");
+    const [clientPhone, setClientPhone] = useState("");
+    const [memo, setMemo] = useState("");
+
+
+    // 데이트피커 날짜 및 시간 값
     const [selectedDate, setSelectedDate] = useState<Date | null>();
     const [selectedStart, setSelectedStart] = useState<Date | null>();
     const [selectedEnd, setSelectedEnd] = useState<Date | null>();
@@ -63,8 +71,22 @@ const CreateCounceling = () => {
         setTutorList([]);
     }
 
+    // moment 이용하여 날짜 포맷 작성
+    const yyyymmdd = moment.tz(selectedDate, 'Asia/Seoul').format('YYYY-MM-DD');
+    const startmmss = moment.tz(selectedStart, 'Asia/Seoul').format('HH:mm:ss.SSS');
+    const endmmss = moment.tz(selectedEnd, 'Asia/Seoul').format('HH:mm:ss.SSS');
+
+    // body에 필요한 날짜값 형식으로 변환
+    const startAt = `${yyyymmdd}T${startmmss}Z`;
+    const endAt = `${yyyymmdd}T${endmmss}Z`;
+
     const onCouncelHandler = (e : React.FormEvent) => {
         e.preventDefault();
+
+        console.log(`강사 아이디 : ${tutorId}`)
+        
+        console.log(`startAt : ${startAt}, endAt : ${endAt}`);
+        console.log(`이름 : ${clientName}, 전화번호 : ${clientPhone}, 메모 : ${memo}`)
     }
 
     return(
@@ -105,7 +127,7 @@ const CreateCounceling = () => {
                             className='flex w-full outline-none'
                             locale="ko"
                             popperPlacement='auto'
-                            onChange={(dateString)=>setSelectedDate(dateString)}
+                            onChange={(date)=>setSelectedDate(date)}
                             selected={selectedDate}
                             dateFormat='yyyy-MM-dd'
                             withPortal
@@ -161,18 +183,24 @@ const CreateCounceling = () => {
                     <div className='flex border rounded-[10px]  px-4 py-2 w-full'>
                         <input 
                         className='w-full outline-none'
+                        value={clientName}
+                        onChange={(e) => setClientName(e.target.value)}
                         type='text'/>
                     </div>
                     <span>연락처*</span>
                     <div className='flex border rounded-[10px]  px-4 py-2 w-full'>
                         <input 
                         className='w-full outline-none'
+                        value={clientPhone}
+                        onChange={(e) => setClientPhone(e.target.value)}
                         type='text'/>
                     </div>
 
                     <span>일정 메모</span>
                     <div className='flex border rounded-[10px]  px-4 py-2 w-full h-[167px]'>
                         <textarea
+                            value={memo}
+                            onChange={(e) => setMemo(e.target.value)}
                             maxLength={500} 
                             className='w-full outline-none' 
                             placeholder='내용을 입력해주세요. (500자 이내)'/>
