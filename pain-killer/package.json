@@ -11,6 +11,13 @@
   },
   "dependencies": {
     "@daypilot/daypilot-lite-react": "^3.15.0",
+    "@fullcalendar/core": "^6.1.8",
+    "@fullcalendar/daygrid": "^6.1.8",
+    "@fullcalendar/interaction": "^6.1.8",
+    "@fullcalendar/react": "^6.1.8",
+    "@fullcalendar/resource": "^6.1.8",
+    "@fullcalendar/resource-timeline": "^6.1.8",
+    "@fullcalendar/timegrid": "^6.1.8",
     "@headlessui/react": "^1.7.16",
     "@heroicons/react": "^2.0.18",
     "@material-tailwind/react": "^2.0.8",
