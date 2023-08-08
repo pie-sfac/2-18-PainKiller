@@ -222,7 +222,7 @@ export default function SchduleManger() {
           )}
           <div className="flex flex-col">
             <label htmlFor="lesson">수업(수강권)선택 *</label>
-            <select className="border border-gray-500 px-4 py-2 rounded-md" onChange={handleSelectTicket}>
+            <select className="border border-gray-500 px-4 py-2 rounded-md">
               {/* 셀렉박스 옵션들 */}
               {tickets.map((ticket) => (
                 <option key={ticket.id} value={ticket.id}>

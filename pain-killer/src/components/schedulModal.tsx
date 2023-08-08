@@ -30,7 +30,7 @@ export default function SchedulModal({ setSchedule }: PropsType) {
         </div>
         <div className="flex flex-col text-left">
           <div className="mb-2 px-4 py-5 rounded-[10px] border-solid border-[1.5px] border-[#6691ff]">
-          <Link to='/schduleManger'>
+          <Link to='/createPrivate'>
             <p className="text-sm text-bold text-[#6691ff]">개인 수업</p>
             <p className="text-xs text-[#505050]">개인 수업 suppoting msg</p>
             <object className="mt-3 float-right" data={journalPath}></object>

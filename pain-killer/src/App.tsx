@@ -46,8 +46,9 @@ import MemberTicketsFix from './pages/member/MemberTicketsFix';
 import GrantList from './pages/StudyMangement/GrantList';
 import DetailMemberTickets from './pages/member/MemberTicketsDetail';
 
-import SchduleManger from './pages/schedule/SchduleManager';
-import MemberSearch from './pages/member/MemberSearch';
+import CreatePrivate from './pages/schedule/CreatePrivate';
+
+import ChnageSchdule from './pages/schedule/ChangeSchdule';
 
 function App() {
   return (
@@ -91,13 +92,14 @@ function App() {
             path="/searchprivatecharge"
             element={<SearchPrivateCharge />}
           />
+          
           <Route
-            path="/membersearch"
-            element={<MemberSearch />}
+            path="/createPrivate"
+            element={<CreatePrivate />}
           />
           <Route
-            path="/schduleManger"
-            element={<SchduleManger />}
+            path="/changschdule"
+            element={<ChnageSchdule />}
           />
           {/* <Route path="/test" element={<WeekCalendar />} /> */}
 

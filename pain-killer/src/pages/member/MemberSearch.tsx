@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // axios 사용을 위해 import 합니다.
 import instance from '../../api/axios_interceptors';
+import { useNavigate } from 'react-router';
 
 interface Member {
   id: number;
@@ -49,14 +50,14 @@ const MemberSearch: React.FC<Props> = ({
   const [searchText, setSearchText] = useState<string>('');
   const [searchResults, setSearchResults] = useState<Member[]>([]);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
-
+  const navigate = useNavigate();
   const handleSearch = async () => {
     try {
       const response = await instance.get<ApiResponse>(
         `/search?query=${searchText}`,
       );
       setSearchResults(response.data.members);
-      console.log('여긴가?',selectedMember)
+      console.log('여긴가?',setSelectedMember)
     } catch (error) {
       console.error('회원 검색 에러:', error);
     }
@@ -78,6 +79,16 @@ const MemberSearch: React.FC<Props> = ({
     }
 
   }, [initialSelectedMemberId, initialSelectedMemberName]);
+
+  const handleNavigation = () => {
+    console.log('SchduleManger로 이동 중');
+    navigate('/schedule', {
+      state: {
+        selectedMemberId: 123,
+        selectedMemberName: 'John Doe',
+      },
+    });
+  };
 
   return (
     <div className='mt-1'>
