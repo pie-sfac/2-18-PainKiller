@@ -117,14 +117,8 @@ function App() {
             element={<MemberTicketsFix />}
           />
 
-<<<<<<< HEAD
-          {/* 비밀번호 재설정 */}
-          <Route path='/pwdreset' element={<PwReset />} />
-          
-=======
           <Route path="/councelingedit" element={<CreateCounceling />} />
           <Route path="/councelingcheck" element={<ScheduleCheck />} />
->>>>>>> main
         </Routes>
       </Router>
     </div>
