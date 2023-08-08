@@ -12,7 +12,7 @@ import StudyList from './pages/StudyMangement/StudyList';
 import CreateStudy from './pages/StudyMangement/CreateStudy';
 import StudyDetails from './pages/StudyMangement/StudyDetails';
 
-import TestCalendar from './components/calendar/days-calendar';
+import TestCalendar from './components/calendar/month-calendar';
 import EmpDetail from './pages/center/EmpDetail';
 import CreateEmp from './pages/center/CreateEmp';
 import ChangePassword from './components/changePassword';
