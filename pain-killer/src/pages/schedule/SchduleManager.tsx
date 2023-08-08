@@ -27,17 +27,6 @@ interface ITutorList {
   phone: string;
 }
 
-interface Member {
-  id: number;
-  name: string;
-  phone: string;
-  sex: 'MALE' | 'FEMALE'; // 성별은 'MALE' 또는 'FEMALE'만 가능하도록 타입 설정
-  birthDate: string;
-  createdAt: string;
-  updatedAt: string;
-  visitedAt: string;
-}
-
 export default function SchduleManger() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedStartDate, setSelectedStartDate] = useState(null);
@@ -47,10 +36,7 @@ export default function SchduleManger() {
   const { selectedMemberId, selectedMemberName } = location.state || {};
   const navigate = useNavigate();
   const [tickets, setTickets] = useState<Ticket[]>([]);
-  // const [selectedMember, setSelectedMember] = useState(null);
-  const [memberId, setMemberId] = useState<number>(0);
-  const [memberName, setMemberName] = useState("");
-
+  const [selectedMember, setSelectedMember] = useState(null);
   const [showMemberSearch, setShowMemberSearch] = useState(false);
   const [selectedTicketId, setSelectedTicketId] = useState<number | null>(null);
   const handleDateChange = (date) => {
@@ -68,16 +54,6 @@ export default function SchduleManger() {
   const handleSelectInstructor = () => {
     setShowMemberSearch(true);
   };
-
-  const onSetMember = (id : number, name : string) => {
-    setMemberId(id);
-    setTutorName(name);
-
-    setIsShowTutor(false);
-    
-    setSearchTutor("");
-    setTutorList([]);
-}
 
   useEffect(() => {
     if (selectedMemberName) {
@@ -122,7 +98,6 @@ export default function SchduleManger() {
       console.error('수업(수강권)을 선택해주세요.');
       return;
     }
-
 
 
     // 선택한 날짜와 시간을 처리
@@ -247,7 +222,7 @@ export default function SchduleManger() {
           )}
           <div className="flex flex-col">
             <label htmlFor="lesson">수업(수강권)선택 *</label>
-            <select className="border border-gray-500 px-4 py-2 rounded-md">
+            <select className="border border-gray-500 px-4 py-2 rounded-md" onChange={handleSelectTicket}>
               {/* 셀렉박스 옵션들 */}
               {tickets.map((ticket) => (
                 <option key={ticket.id} value={ticket.id}>
