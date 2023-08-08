@@ -46,8 +46,8 @@ import MemberTicketsFix from './pages/member/MemberTicketsFix';
 import GrantList from './pages/StudyMangement/GrantList';
 import DetailMemberTickets from './pages/member/MemberTicketsDetail';
 import ScheduleCheck from './pages/schedule/ScheduleCheck';
-import CreateCounceling from './pages/schedule/CreateCounceling';
 import CreatePrivate from './pages/schedule/CreatePrivate';
+import CreateCounseling from './pages/schedule/CreateCounseling';
 
 function App() {
   return (
@@ -122,9 +122,9 @@ function App() {
             path="/createPrivate"
             element={<CreatePrivate />}
           />
-
-          <Route path="/councelingedit" element={<CreateCounceling />} />
-          <Route path="/councelingcheck" element={<ScheduleCheck />} />
+          {/* 상담 일정생성 */}
+          <Route path="/counselingedit" element={<CreateCounseling />} />
+          
         </Routes>
       </Router>
     </div>
