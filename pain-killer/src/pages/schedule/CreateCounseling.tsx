@@ -18,7 +18,7 @@ interface ITutorList {
     phone: string,
 }
 
-const CreateCounceling = () => {
+const CreateCounseling = () => {
     
     // 이름, 전화번호, 메모
     const [clientName, setClientName] = useState("");
@@ -262,4 +262,4 @@ const CreateCounceling = () => {
 
 }
 
-export default CreateCounceling;
+export default CreateCounseling;
