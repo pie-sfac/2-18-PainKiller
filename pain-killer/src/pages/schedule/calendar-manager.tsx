@@ -3,7 +3,7 @@ import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
 import Calendar from 'react-calendar';
-import SchedulModal from '../../components/schedulModal';
+import SchedulModal from '../../components/calendar/schedulModal';
 
 import '../../assets/style/calendar.css';
 

@@ -1,4 +1,4 @@
-import journalPath from '../assets/svg/journal-path.svg';
+import journalPath from '../../assets/svg/journal-path.svg';
 
 export default function SchedulModal({ setSchedule }: PropsType) {
   const closeSchedulModal = () => {
@@ -6,7 +6,7 @@ export default function SchedulModal({ setSchedule }: PropsType) {
   };
 
   return (
-    <div className="w-full h-full fixed top-0 left-0 bg-[#000000bc]">
+    <div className="z-10 w-full h-full fixed top-0 left-0 bg-[#000000bc]">
       <div className="w-3/4 px-6 py-5 absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] bg-white rounded-[10px]">
         <div className="mb-9 flex">
           <div className="text-left flex-1">
