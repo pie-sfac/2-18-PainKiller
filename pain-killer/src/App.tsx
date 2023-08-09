@@ -48,6 +48,7 @@ import DetailMemberTickets from './pages/member/MemberTicketsDetail';
 import ScheduleCheck from './pages/schedule/ScheduleCheck';
 import CreatePrivate from './pages/schedule/CreatePrivate';
 import CreateCounseling from './pages/schedule/CreateCounseling';
+import Inquiry_schedule from './pages/schedule/inquiry_schedule';
 
 function App() {
   return (
@@ -124,6 +125,10 @@ function App() {
           />
           {/* 상담 일정생성 */}
           <Route path="/counselingedit" element={<CreateCounseling />} />
+
+
+          {/* and so on */}
+          <Route path="/isk" element={<Inquiry_schedule />} /> 
           
         </Routes>
       </Router>
