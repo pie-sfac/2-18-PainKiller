@@ -7,6 +7,7 @@ import ko from 'date-fns/locale/ko';
 import React, { useState, useEffect } from 'react';
 import moment from 'moment-timezone';
 import instance from '../../api/axios_interceptors';
+import { useNavigate } from 'react-router-dom';
 registerLocale('ko', ko);
 interface ITutorList {
   id: number;
@@ -23,26 +24,29 @@ interface IMemberList {
 }
 
 interface IIssuedTicket {
-  availableTickets: [
+  availableTickets: IAticket[];
+}
+
+interface IAticket {
+  id: number;
+  title: string;
+  lessonType: string;
+  privateTutorId: number;
+  remainingCount: number;
+  availableReservationCount: number;
+  lessonDuration: number;
+  owners: [
     {
       id: number;
-      title: string;
-      lessonType: string;
-      privateTutorId: number;
-      remainingCount: number;
-      availableReservationCount: number;
-      lessonDuration: number;
-      owners: [
-        {
-          id: number;
-          name: string;
-          phone: string;
-        },
-      ];
+      name: string;
+      phone: string;
     },
   ];
 }
 const CreatePrivate = () => {
+
+  const navigate = useNavigate();
+
   // 데이트피커 날짜 및 시간 값
   const [selectedDate, setSelectedDate] = useState<Date | null>();
   const [selectedStart, setSelectedStart] = useState<Date | null>();
@@ -75,6 +79,7 @@ const CreatePrivate = () => {
     setIsShowMember(false);
   };
 
+
   // 직원불러오기
   const onGetSearchHandler = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,7 +91,15 @@ const CreatePrivate = () => {
       alert(error);
     }
   };
-  const [issuedTicket, setIssuedTicket] = useState<IIssuedTicket[]>([]);
+
+  const [issuedTicket, setIssuedTicket] = useState<IAticket[]>([]);
+  //티켓 아이디
+  const [ticketId, setTicketId] = useState(0);
+
+  const onTicketHandler = (e : any) => {
+    setTicketId(e.target.value);
+  }
+
   // 수업 수강권 선택
   const getissuedTicket = async () => {
     try {
@@ -95,32 +108,41 @@ const CreatePrivate = () => {
       );
 
       console.log(response.data.availableTickets);
+
+      // 예약 가능한 수강권 리스트
       setIssuedTicket(response.data.availableTickets);
+
     } catch (error) {}
   };
-  useEffect(() => {
-    getissuedTicket();
-  }, [tutorId, memberId]);
 
   useEffect(() => {
-    console.log('값 담기니??', issuedTicket); // This will show the updated state value
-  }, [issuedTicket]);
+    getissuedTicket();
+
+    console.log(`강사 아이디 : ${tutorId}, 회원 아이디 ${memberId}`);
+  }, [tutorId, memberId]);
 
   const onSetTutor = (id: number, name: string) => {
     setTutorId(id);
     setTutorName(name);
-    setIsShowTutor(false);
 
+    setIsShowTutor(false);
     setSearch('');
     setTutorList([]);
+
+  
   };
+
   const onSetMember = (id: number, name: string) => {
     setMemberId(id);
     setMemberName(name);
+
     setIsShowMember(false);
     setSearch('');
     setMemberList([]);
+
+   
   };
+
   // moment 이용하여 날짜 포맷 작성
   const yyyymmdd = moment.tz(selectedDate, 'Asia/Seoul').format('YYYY-MM-DD');
   const startmmss = moment
@@ -130,19 +152,28 @@ const CreatePrivate = () => {
   // body에 필요한 날짜값 형식으로 변환
   const startAt = `${yyyymmdd}T${startmmss}Z`;
   const endAt = `${yyyymmdd}T${endmmss}Z`;
-  const onCouncelHandler = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(`강사 아이디 : ${tutorId}, 회원 아이디 ${memberId}`);
-  };
 
-  const getLessonTypeTranslation = (type) => {
-    switch (type) {
-      case 'SINGLE':
-        return '개인수업 1:1';
-      default:
-        return type;
+  const onCouncelHandler = async(e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await instance.post(`/schedules/private-lesson`, {
+
+        userId: tutorId,
+        issuedTicketId: ticketId,
+        startAt: startAt,
+        endAt : endAt
+      });
+
+      console.log(res);
+      navigate('/scheduleInfo')
+      
+    } catch (error) {
+      alert(error)
     }
   };
+
+  
 
   return (
     <>
@@ -156,7 +187,7 @@ const CreatePrivate = () => {
       </header>
       <div className="flex flex-col p-2 gap-5">
         <div className="flex justify-left">
-          <span className="font-bold">상담</span>
+          <span className="font-bold">개인 수업</span>
         </div>
         <form
           className="flex flex-col items-start gap-2"
@@ -196,18 +227,17 @@ const CreatePrivate = () => {
               <div>{memberName}</div>
             </div>
           )}
+
           <span>수업(수강권) 선택</span>
-          <select className="border border-gray-500 px-4 py-2 rounded-md">
+
+          <select className="border border-gray-500 px-4 py-2 rounded-md" onChange={onTicketHandler}>
             <option className="text-Gray-300">수강권을 선택하세요</option>
-            {issuedTicket.map((issuedTicket) => (
-             
-              <option key={issuedTicket?.id} value={issuedTicket?.id}>
-                {issuedTicket?.title}{' '}
-                {getLessonTypeTranslation(issuedTicket?.lessonType)}
-                {/* {issuedTicket?.lessonDuration} */}
-              </option>
-            ))}
+            {issuedTicket && 
+              issuedTicket.map((ticket) => (
+                <option key={ticket.id} value={ticket.id}>{ticket.title}</option>
+              ))}
           </select>
+
           <span>일자 선택*</span>
           <div className="flex border rounded-[10px] justify-end px-4 py-2 w-[166px]">
             <DatePicker
@@ -237,7 +267,7 @@ const CreatePrivate = () => {
               withPortal
             />
             <img src={TimeIcon} alt="시계 아이콘" />
-          </div>{' '}
+          </div>
           ~
           <div className="flex border rounded-[10px] justify-end px-4 py-2 w-[166px]">
             <DatePicker
@@ -260,6 +290,9 @@ const CreatePrivate = () => {
           </button>
         </form>
       </div>
+
+
+      {/*직원 검색 모달 */}
       {isShowTutor && (
         <>
           <div
@@ -311,6 +344,9 @@ const CreatePrivate = () => {
           </div>
         </>
       )}
+
+
+      {/*회원 검색 모달 */}
       {isShowMember && (
         <>
           <div

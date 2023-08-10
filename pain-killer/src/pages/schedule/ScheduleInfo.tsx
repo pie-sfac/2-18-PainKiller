@@ -191,21 +191,57 @@ const SchduleInfo = () => {
                 </button>
 
                 <span className='text-left w-full'>수업 일정({`${classData.length} 건`})</span>
-                <div className='border h-[240px] w-full overflow-y-auto py-2'>
+                <div className='border-[3px] rounded border-[#E7E7E7] h-[240px] w-full overflow-y-auto py-2'>
                     {
                         classData.length === 0 ? <div>조회된 수업 일정이 없습니다.</div>
                         :
                         classData.map((privateclass) => (
                             <Link to = {`/classdetail/${privateclass.id}`} key={privateclass.id}>
                                 <div className='flex flex-col items-start bg-white rounded mb-2 p-2'>
-                                    <div>
-                                        {privateclass.issuedTicket.title}
+                                <div className='w-full flex justify-between'>
+                                        <div className='flex gap-2 items-center'>
+                                            <div>수강명</div>
+                                            <div className='rounded bg-[#F4F4F4] px-2 py-1'>
+                                                {privateclass.issuedTicket.title}
+                                            </div>
+                                        </div>
+                                        <div className='flex'>
+                                            { privateclass.attendanceHistories[0].status === 'WAIT' &&
+                                                <div className='rounded bg-[#F4F4F4] px-2 py-1'>
+                                                    예약
+                                                </div>
+                                            }
+                                            { privateclass.attendanceHistories[0].status === 'PRESENT' &&
+                                                <div className='rounded bg-[#F4F4F4] px-2 py-1'>
+                                                    출석
+                                                </div>
+                                            }
+                                            { privateclass.attendanceHistories[0].status === 'ABSENT' &&
+                                                <div className='rounded bg-[#F4F4F4] px-2 py-1'>
+                                                    결석
+                                                </div>
+                                            }    
+                                        </div>
                                     </div>
-                                    <div>
-                                        {privateclass.startAt.slice(0,10)}
+                                    <div className='w-full flex justify-between'>
+                                        <div>{privateclass.startAt.slice(0,10)}</div>
+                                        <div>
+                                            {privateclass.startAt.slice(11,13)}시 {privateclass.startAt.slice(14,16)}분 ~ {privateclass.endAt.slice(11,13)}시 {privateclass.endAt.slice(14,16)}분
+                                        </div>
                                     </div>
-                                    <div>
-                                        {privateclass.startAt.slice(11,13)}시 {privateclass.startAt.slice(14,16)}분 ~ {privateclass.endAt.slice(11,13)}시 {privateclass.endAt.slice(14,16)}분
+                                    <div className='w-full flex justify-between'>
+                                        <div className='flex gap-2 items-center'>
+                                            <div>담당 강사</div>
+                                            <div className='rounded bg-[#F4F4F4] px-2 py-1'>
+                                                {privateclass.tutor.name}
+                                            </div>
+                                        </div>
+                                        <div className='flex gap-2 items-center'>
+                                            <div>회원</div>
+                                            <div className='rounded bg-[#F4F4F4] px-2 py-1'>
+                                                {privateclass.attendanceHistories[0].member.name}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </Link>
@@ -213,13 +249,46 @@ const SchduleInfo = () => {
                     } 
                 </div>
                 <span className='text-left w-full'>상담 일정({`${counselData.length} 건`})</span>
-                <div className='border h-[240px] w-full overflow-y-auto p-2'>
+                <div className='border-[3px] rounded border-[#E7E7E7] h-[240px] w-full overflow-y-auto py-2'>
                 {
                         counselData.length === 0 ? <div>조회된 상담 일정이 없습니다.</div>
                         :
-                        <div>
-                            상담데이터
-                        </div>
+                        counselData.map((counsel) => (
+                            <Link to = {`/counseldetail/${counsel.id}`} key={counsel.id}>
+                                <div className='flex flex-col items-start bg-white rounded mb-2 p-2 gap-1'>
+                                
+                                    <div className='w-full flex justify-between'>
+                                        <div>{counsel.startAt.slice(0,10)}</div>
+                                        <div>
+                                            {counsel.startAt.slice(11,13)}시 {counsel.startAt.slice(14,16)}분 ~ {counsel.endAt.slice(11,13)}시 {counsel.endAt.slice(14,16)}분
+                                        </div>
+                                    </div>
+                                    <div className='w-full flex justify-between'>
+                                        <div className='flex gap-2 items-center'>
+                                            <div className='rounded border-2 border-[#1FB881] text-[#89ED9E] px-1'>
+                                                상담
+                                            </div>
+                                        </div>
+                                        <div className='flex gap-2 items-center'>
+                                            <div className='rounded bg-[#F4F4F4] px-2 py-1'>
+                                                {counsel.counselor.name}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className='w-full flex justify-between'>
+                                        <div className='flex gap-2 items-center'>
+                                            <div>상담 의뢰</div>
+                                            <div className='rounded bg-[#F4F4F4] px-2 py-1'>
+                                                {counsel.client.name}
+                                            </div>
+                                        </div>
+                                        <div className='flex gap-2 items-center'>
+                                            {counsel.client.phone}
+                                        </div>
+                                    </div>
+                                </div>
+                            </Link>
+                        ))
                     } 
                 </div>
 
