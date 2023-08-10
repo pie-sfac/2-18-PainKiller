@@ -1,4 +1,4 @@
-/* import journalPath from '../assets/svg/journal-path.svg'; */
+import journalPath from '../../assets/svg/journal-path.svg';
 import { Link } from 'react-router-dom';
 
 export default function SchedulModal({ setSchedule }: PropsType) {
@@ -30,7 +30,7 @@ export default function SchedulModal({ setSchedule }: PropsType) {
         </div>
         <div className="flex flex-col text-left">
           <div className="mb-2 px-4 py-5 rounded-[10px] border-solid border-[1.5px] border-[#6691ff]">
-            <Link to="/createPrivate">
+            <Link to="/privatelesson">
               <p className="text-sm text-bold text-[#6691ff]">개인 수업</p>
               <p className="text-xs text-[#505050]">개인 수업 suppoting msg</p>
               <object className="mt-3 float-right" data={journalPath}></object>
@@ -41,10 +41,12 @@ export default function SchedulModal({ setSchedule }: PropsType) {
             <p className="text-xs text-[#aeaeae]">그룹 수업 suppoting msg</p>
             <object className="mt-3 float-right" data={journalPath}></object>
           </div>
-          <div className="mb-2 px-4 py-5 rounded-[10px] border-solid border-[1.5px] border-[#cfcfcf]">
-            <p className="text-sm text-bold text-[#1d1d1d]">상담</p>
-            <p className="text-xs text-[#505050]">상담 suppoting msg</p>
-            <object className="mt-3 float-right" data={journalPath}></object>
+          <div className="mb-2 px-4 py-5 rounded-[10px] border-solid border-[1.5px] border-[#6691ff]">
+            <Link to="/counseling">
+              <p className="text-sm text-bold text-[#6691ff]">상담</p>
+              <p className="text-xs text-[#505050]">상담 suppoting msg</p>
+              <object className="mt-3 float-right" data={journalPath}></object>
+            </Link>
           </div>
         </div>
       </div>
