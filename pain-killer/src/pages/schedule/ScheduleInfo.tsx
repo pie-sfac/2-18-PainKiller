@@ -1,7 +1,7 @@
 import DatePicker, { registerLocale } from 'react-datepicker';
 import CalIcon from '../../assets/Calendar_24px.svg';
 import ko from 'date-fns/locale/ko'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import moment from 'moment';
 import SchedulModal from '../../components/calendar/schedulModal';
 import instance from '../../api/axios_interceptors';
@@ -96,8 +96,13 @@ interface ScheduleData {
 
 const SchduleInfo = () => {
 
-    const [selectedStartDate, setSelectedStartDate] = useState<Date | null>();
-    const [selectedEndDate, setSelectedEndDate] = useState<Date | null>();
+    // 이번 달 첫날과 마지막 날 가져오기
+    const now = new Date();
+    const nowMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const nowMonthEnd = new Date(now.getFullYear(), now.getMonth()+1, 0);
+
+    const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(nowMonthStart);
+    const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(nowMonthEnd);
 
     // 수업 일정 데이터
     const[classData, setClassData] = useState<IPrivateSchedules[]>([]);
@@ -131,6 +136,10 @@ const SchduleInfo = () => {
         }
 
     }
+
+    useEffect(()=>{
+        onSchduleHandler();
+    },[])
 
     return(
         <div className="flex flex-col items-center bg-[#F4F4F4] p-2 gap-3">
@@ -196,7 +205,7 @@ const SchduleInfo = () => {
                         classData.length === 0 ? <div>조회된 수업 일정이 없습니다.</div>
                         :
                         classData.map((privateclass) => (
-                            <Link to = {`/classdetail/${privateclass.id}`} key={privateclass.id}>
+                            <Link to = {`/lessondetail/${privateclass.id}`} key={privateclass.id}>
                                 <div className='flex flex-col items-start bg-white rounded mb-2 p-2'>
                                 <div className='w-full flex justify-between'>
                                         <div className='flex gap-2 items-center'>
@@ -212,12 +221,12 @@ const SchduleInfo = () => {
                                                 </div>
                                             }
                                             { privateclass.attendanceHistories[0].status === 'PRESENT' &&
-                                                <div className='rounded bg-[#F4F4F4] px-2 py-1'>
+                                                <div className='rounded border-[1px] border-[#4679FC] bg-[#6691FF] text-white px-2 py-1'>
                                                     출석
                                                 </div>
                                             }
                                             { privateclass.attendanceHistories[0].status === 'ABSENT' &&
-                                                <div className='rounded bg-[#F4F4F4] px-2 py-1'>
+                                                <div className='rounded border-[1px] border-[#DF291D] bg-[#FF7B72] text-white px-2 py-1'>
                                                     결석
                                                 </div>
                                             }    
@@ -254,7 +263,7 @@ const SchduleInfo = () => {
                         counselData.length === 0 ? <div>조회된 상담 일정이 없습니다.</div>
                         :
                         counselData.map((counsel) => (
-                            <Link to = {`/counseldetail/${counsel.id}`} key={counsel.id}>
+                            <Link to = {`/counseling/${counsel.id}`} key={counsel.id}>
                                 <div className='flex flex-col items-start bg-white rounded mb-2 p-2 gap-1'>
                                 
                                     <div className='w-full flex justify-between'>
@@ -265,7 +274,7 @@ const SchduleInfo = () => {
                                     </div>
                                     <div className='w-full flex justify-between'>
                                         <div className='flex gap-2 items-center'>
-                                            <div className='rounded border-2 border-[#1FB881] text-[#89ED9E] px-1'>
+                                            <div className='rounded border-[1px] border-[#1FB881] bg-[#89ED9E] text-white px-1'>
                                                 상담
                                             </div>
                                         </div>

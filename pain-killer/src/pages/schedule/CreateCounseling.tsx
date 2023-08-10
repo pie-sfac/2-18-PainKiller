@@ -111,12 +111,12 @@ const CreateCounseling = () => {
     return(
         <>
             <header className="bg-white border-b border-t-neutral-100">
-            <nav className="flex justify-between items-center p-5">
-                    <div className='flex'>
-                        <img src={BackImage} alt="Back"/>
-                        <span className="text-lg ml-2">일정 생성</span>
-                    </div>
-            </nav>
+                <nav className="flex justify-between items-center p-5">
+                        <div className='flex'>
+                            <img src={BackImage} alt="Back"/>
+                            <span className="text-lg ml-2">일정 생성</span>
+                        </div>
+                </nav>
             </header>
             <div className='flex flex-col p-2 gap-5'>
                 <div className='flex justify-left'>

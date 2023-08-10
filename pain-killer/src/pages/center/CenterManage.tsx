@@ -51,8 +51,6 @@ const CenterManage = () => {
           <span className="text-[#2D62EA]"> {empCount}</span>
         </span>
         <div className="flex items-center gap-3">
-          <span className="text-[12px] hover:text-[#2D62EA]">등록순</span>
-          <span className="text-[12px] hover:text-[#2D62EA]">이름순</span>
           <Link to="/addemp">
             <span className="border rounded-[10px] py-1 px-[10px] text-[12px]">
               직원 등록

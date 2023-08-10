@@ -33,6 +33,10 @@ import DetailMemberTickets from './pages/member/MemberTicketsDetail';
 import CreatePrivate from './pages/schedule/CreatePrivate';
 import CreateCounseling from './pages/schedule/CreateCounseling';
 import SchduleInfo from './pages/schedule/ScheduleInfo';
+import PrivateDetail from './pages/schedule/PrivateDetail';
+import CounselDetail from './pages/schedule/CounselingDetail';
+import ModPrivate from './pages/schedule/ModPrivate';
+import ModCounseling from './pages/schedule/ModCounseling';
 
 function App() {
   return (
@@ -110,15 +114,25 @@ function App() {
             path="/issued-tickets/:issuedTicketId"
             element={<MemberTicketsFix />}
           />
+
           {/* 개인수업 일정등록 */}
           <Route
             path="/privatelesson"
             element={<CreatePrivate />}
           />
+          <Route
+            path="/lessondetail/:lessonId"
+            element={<PrivateDetail />}
+          />
+           <Route
+            path="/modlesson/:lessonId"
+            element={<ModPrivate />}
+          />
+
           {/* 상담 일정생성 */}
           <Route path="/counseling" element={<CreateCounseling />} />
-          
-
+          <Route path="/counseling/:counselId" element={<CounselDetail/>} />
+          <Route path="/modcounseling/:counselId" element={<ModCounseling/>} />
           
         </Routes>
       </Router>
