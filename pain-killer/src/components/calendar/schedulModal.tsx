@@ -1,4 +1,4 @@
-import journalPath from '../assets/svg/journal-path.svg';
+import journalPath from '../../assets/svg/journal-path.svg';
 import { Link } from 'react-router-dom';
 
 export default function SchedulModal({ setSchedule }: PropsType) {
