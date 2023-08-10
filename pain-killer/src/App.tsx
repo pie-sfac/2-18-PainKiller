@@ -112,11 +112,11 @@ function App() {
           />
           {/* 개인수업 일정등록 */}
           <Route
-            path="/createPrivate"
+            path="/privatelesson"
             element={<CreatePrivate />}
           />
           {/* 상담 일정생성 */}
-          <Route path="/counselingedit" element={<CreateCounseling />} />
+          <Route path="/counseling" element={<CreateCounseling />} />
           
 
           

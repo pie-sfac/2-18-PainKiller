@@ -7,6 +7,7 @@ import ko from 'date-fns/locale/ko'
 import React, { useState } from 'react';
 import moment from 'moment-timezone';
 import instance from '../../api/axios_interceptors';
+import { useNavigate } from 'react-router-dom';
 
 registerLocale("ko", ko);
 
@@ -19,6 +20,8 @@ interface ITutorList {
 }
 
 const CreateCounseling = () => {
+
+    const navigate = useNavigate();
     
     // 이름, 전화번호, 메모
     const [clientName, setClientName] = useState("");
@@ -80,14 +83,30 @@ const CreateCounseling = () => {
     const startAt = `${yyyymmdd}T${startmmss}Z`;
     const endAt = `${yyyymmdd}T${endmmss}Z`;
 
-    const onCouncelHandler = (e : React.FormEvent) => {
+    const onCouncelHandler = async (e : React.FormEvent) => {
         e.preventDefault();
 
-        console.log(`강사 아이디 : ${tutorId}`)
-        
-        console.log(`startAt : ${startAt}, endAt : ${endAt}`);
-        console.log(`이름 : ${clientName}, 전화번호 : ${clientPhone}, 메모 : ${memo}`)
-    }
+        try {
+            const res = await instance.post(`/schedules/counseling`, {
+      
+              userId: tutorId,
+              memberId : 0,
+              clientName : clientName,
+              clientPhone : clientPhone,
+              memo : memo,
+              startAt: startAt,
+              endAt : endAt
+            });
+      
+            console.log(res);
+
+            navigate('/scheduleInfo');
+            
+          } catch (error) {
+            alert(error);
+            console.log(error)
+          }
+    };
 
     return(
         <>
@@ -183,6 +202,7 @@ const CreateCounseling = () => {
                     <div className='flex border rounded-[10px]  px-4 py-2 w-full'>
                         <input 
                         className='w-full outline-none'
+                        placeholder='이름을 입력해주세요'
                         value={clientName}
                         onChange={(e) => setClientName(e.target.value)}
                         type='text'/>
@@ -191,6 +211,7 @@ const CreateCounseling = () => {
                     <div className='flex border rounded-[10px]  px-4 py-2 w-full'>
                         <input 
                         className='w-full outline-none'
+                        placeholder='000-0000-0000'
                         value={clientPhone}
                         onChange={(e) => setClientPhone(e.target.value)}
                         type='text'/>
