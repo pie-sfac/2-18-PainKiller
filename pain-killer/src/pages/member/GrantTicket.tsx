@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import instance from "../../api/axios_interceptors";
-import { select } from '@material-tailwind/react';
 import BackImage from '../../img/Back_24px.svg'
+import ProfileIcon from '../../assets/Profile_24px.svg'
 
 
 interface Ticket {
@@ -27,12 +27,10 @@ interface BookableLessons{
 }
 
 interface IEmpList {
-    id: number;
-    name: string;
-    phone: string;
-    memberCount: number;
-    rating: number;
-    memo: string;
+  id: number,
+  name: string,
+  loginId : string,
+  phone: string,
   
   }
   
@@ -57,13 +55,44 @@ const GrantTicket = () => {
     const [start, setStart] = useState('');
     const [end, setEnd] = useState('');
     // 강사
-    const [selectedTutor, setSelectedTutor] = useState(0);
+    const [tutorId, setTutorId] = useState(0);
+    const [tutorName, setTutorName] = useState("");
+
+    const [isShowTutor, setIsShowTutor] = useState(false);
+    const [searchTutor, setSearchTutor] = useState("");
 
 
-
-    const handleSelect = (e : any) => {
-        setSelectedTutor(e.target.value);
+    const onSelectShow = () => {    
+        setIsShowTutor(true);
     }
+
+    const onClose = () => {    
+        setIsShowTutor(false);
+    }
+
+    const onGetTutorHandler = async(e : React.FormEvent) => {
+      e.preventDefault();
+
+      try{
+          const response = await instance(`/search?query=${searchTutor}`) 
+
+          setEmpList(response.data.users);
+
+      }catch(error){
+          alert(error);
+      }
+  }
+
+  const onSetTutor = (id : number, name : string) => {
+    setTutorId(id);
+    setTutorName(name);
+
+    setIsShowTutor(false);
+    
+    setSearchTutor("");
+    setEmpList([]);
+}
+
 
     // 티켓 상세 정보 불러오기
     const getTicketInfo = async () => {
@@ -76,26 +105,12 @@ const GrantTicket = () => {
         catch(error){
             alert(error);
         }
-       
-
     }
 
-    // 담당강사 불러오기
-    const getTutor = async () => {
-        try{
-            const response = await instance.get('/staffs');
-
-            setEmpList(response.data.datas);
-
-        } 
-        catch(error){
-            alert(error);
-        }
-    }
+  
 
     useEffect(()=> {
         getTicketInfo();
-        getTutor();
 
         console.log("티켓 아이디 " + ticketId);
         console.log("멤버 아이디 " + memberId);
@@ -105,7 +120,6 @@ const GrantTicket = () => {
     const handleDecreaseServiceCount = () => {
         setServiceCount((prevCount) => Math.max(prevCount - 1, 0));
     };
-
     const handleIncreaseServiceCount = () => {
         // 최대 횟수를 넘지 않게 해놨음
         setServiceCount((prevCount) => Math.min(prevCount +1 , maxServiceCount) );
@@ -138,7 +152,7 @@ const GrantTicket = () => {
                    [ memberId ]
                   ,
                   serviceCount : maxServiceCount,
-                  privateTutorId : selectedTutor,
+                  privateTutorId : tutorId,
                   startAt : start,
                   endAt : end
             });
@@ -150,10 +164,11 @@ const GrantTicket = () => {
         } catch (error : any) {
           alert(error);
         }
+        
     }
   
     return(
-
+      
       <div className='flex flex-col gap-5 p-2'>
         <header className="bg-white border-b border-t-neutral-100">
           <nav className="flex p-5 justify-between">
@@ -184,17 +199,17 @@ const GrantTicket = () => {
         
         {/* 캘린더 라이브러리 잘 이용하면 버튼 이용해서 날짜설정 */}
         <div className='flex flex-col mr-10'>
-            <div className='text-left'>유효기간(캘린더 라이브러리 이용하면 날짜 지정 편해질지도?)</div>
+            <div className='text-left'>유효기간</div>
             <div className='flex flex-col items-start'>
-                <input 
+                <input
+                type='date' 
                 className='rounded border w-1/2 p-2' 
-                placeholder='0000-00-00'
                 value={start}
                 onChange={(e) => setStart(e.target.value)}/>
                 ~ 
-                <input 
+                <input
+                type='date' 
                 className='rounded border w-1/2 p-2' 
-                placeholder='0000-00-00'
                 value={end}
                 onChange={(e) => setEnd(e.target.value)}/>
             </div>
@@ -239,16 +254,70 @@ const GrantTicket = () => {
         
         <div className='flex flex-col gap-2'>
             <div className='text-left'>담당 강사</div>
-            <select defaultValue = "선택하세요" value={selectedTutor} onChange={handleSelect}>
-                {empList.map((emp)=>(
-                    <option key={emp.id} value={emp.id}>{emp.name}</option>
-                ))}
-            </select>
+            { tutorId === 0 ? 
+                    <div 
+                        className='w-[130px] border-[1px] border-[#6691FF] text-[#6691FF] px-3 py-2 rounded-[10px]'
+                        onClick={onSelectShow} > 
+                        + 선택하기
+                     </div>
+                     :
+                     <div className='flex border rounded-[10px] px-3 py-2 gap-2 w-[130px]' onClick={onSelectShow}>
+                         <img src={ProfileIcon} alt='프로필 아이콘'/>
+                        <div>{tutorName}</div>
+                     </div>
+            }
         </div>
 
         <button className='border rounded px-4 py-3 hover:bg-[#2D62EA] hover:text-white ' onClick={onGrantTicket}>완료</button>
-          
+        {isShowTutor &&
+        <>
+            <div className='absolute top-0 left-0 bg-[#000000] opacity-90 w-full h-full' onClick={onClose}></div>
+            <div className='absolute top-[25%] left-[10%] bg-[#FFFFFF] w-[80%] h-1/2 overflow-y-auto rounded p-2'>
+                <form
+                    className=" px-4 py-1 bg-white rounded-[10px] flex border"
+                    onSubmit={onGetTutorHandler}
+                >
+                    <input
+                        className="flex-1 placeholder:text-xs placeholder:font-normal outline-none"
+                        placeholder="직원 이름을 입력하세요"
+                        value={searchTutor}
+                        onChange={(e) => setSearchTutor(e.target.value)}
+                    />
+                    <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    >
+                        <path
+                            d="M13.4765 14.8907C12.4957 15.5892 11.2958 16 10 16C6.68629 16 4 13.3137 4 10C4 6.68629 6.68629 4 10 4C13.3137 4 16 6.68629 16 10C16 11.2958 15.5892 12.4957 14.8907 13.4765L20.7071 19.2929C21.0976 19.6834 21.0976 20.3166 20.7071 20.7071C20.3166 21.0976 19.6834 21.0976 19.2929 20.7071L13.4765 14.8907ZM14.5 10C14.5 7.51472 12.4853 5.5 10 5.5C7.51472 5.5 5.5 7.51472 5.5 10C5.5 12.4853 7.51472 14.5 10 14.5C12.4853 14.5 14.5 12.4853 14.5 10Z"
+                            fill="#505050"
+                        />
+                    </svg>
+                </form>
+                <div className='h-[450px] overflow-auto'>
+                {empList &&
+                empList.map((emp) => (
+                    <div 
+                        key={emp.id} 
+                        className='flex border rounded p-2 mt-2 justify-between items-center text-[13px]'
+                        onClick={() => onSetTutor(emp.id, emp.name)}>
+                        <div className='flex gap-2 items-center'>
+                            <img src={ProfileIcon} alt='프로필 아이콘'/>
+                            <div>{emp.name}({emp.loginId})</div>
+                        </div>
+                        <div>{emp.phone}</div>
+                    </div>
+                ))
+                }
+                </div>
+            </div>
+        </>
+        }  
+
       </div>
+      
     )
 
 }

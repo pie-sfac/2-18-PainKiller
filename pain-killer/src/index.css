@@ -16,6 +16,16 @@ input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 
+input[type='date']::before {
+  content: attr(data-placeholder);
+  width: 100%;
+}
+
+input[type='date']:focus::before,
+input[type='date']:valid::before {
+  display: none;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

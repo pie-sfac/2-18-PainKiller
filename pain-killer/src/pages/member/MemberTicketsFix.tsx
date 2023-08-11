@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import BackImage from '../../img/Back_24px.svg';
 import instance from '../../api/axios_interceptors';
+import ProfileIcon from '../../assets/Profile_24px.svg'
 
 interface MemberTickets {
   id: number;
@@ -22,24 +23,70 @@ interface MemberTickets {
   endAt: string;
   remainingCount: number;
   availableReservationCoun: number;
-  defaultCoun: number;
-  serviceCoun: number;
-  defaultTer: number;
-  defaultTermUni: string;
-  isSuspende: boolean;
-  isCancele: boolean;
-  createdA: string;
-  updatedA: string;
-  messag: string;
+  defaultCount: number;
+  serviceCount: number;
+  defaultTerm: number;
+  defaultTermUnit: string;
+  isSuspended: boolean;
+  isCanceled: boolean;
+  createdAt: string;
+  updatedAt: string;
+  message: string;
 }
+
+interface IEmpList {
+  id: number,
+  name: string,
+  loginId : string,
+  phone: string,
+  
+  }
 
 const MemberTicketsFix = () => {
   const { issuedTicketId } = useParams();
-  const access_token = localStorage.getItem('access_token');
+  
   const navigate = useNavigate();
   const onPrevious = () => {
     navigate(-1);
   };
+
+  const [empList, setEmpList] = useState<IEmpList[]>([]);
+
+ 
+
+  const [isShowTutor, setIsShowTutor] = useState(false);
+  const [searchTutor, setSearchTutor] = useState("");
+
+
+  const onSelectShow = () => {    
+      setIsShowTutor(true);
+  }
+  const onClose = () => {    
+      setIsShowTutor(false);
+  }
+
+  const onGetTutorHandler = async(e : React.FormEvent) => {
+    e.preventDefault();
+    try{
+        const response = await instance(`/search?query=${searchTutor}`) 
+
+        setEmpList(response.data.users);
+
+    }catch(error){
+        alert(error);
+    }
+}
+
+const onSetTutor = (id : number, name : string) => {
+  setTutorId(id);
+  setTutorName(name);
+
+  setIsShowTutor(false);
+  
+  setSearchTutor("");
+  setEmpList([]);
+}
+
 
   const [memTicketDetails, setMemTicketDetails] = useState<MemberTickets>();
   const [lessonType, setlessonType] = useState('');
@@ -49,7 +96,9 @@ const MemberTicketsFix = () => {
   const [memTicketRemainingCount, setMemTicketRemainingCount] = useState();
   const [memTicketDefaultCount, setMemTicketDefaultCount] = useState();
   const [memTicketServiceCount, setMemTicketServiceCount] = useState();
-  const [privateTutorName, setPrivateTutorName] = useState('');
+  const [tutorId, setTutorId] = useState(0);
+  const [tutorName, setTutorName] = useState("");
+  
 
   const getMemTicketDetail = async () => {
     //get부분으로 가져오는 모습
@@ -63,9 +112,9 @@ const MemberTicketsFix = () => {
       setMemTicketRemainingCount(response.data.remainingCount);
       setMemTicketDefaultCount(response.data.defaultCount);
       setMemTicketServiceCount(response.data.serviceCount);
-      setPrivateTutorName(response.data.privateTutor.name);
+      setTutorId(response.data.privateTutor.id);
+      setTutorName(response.data.privateTutor.name)
 
-      console.log(response);
     } catch (error) {
       alert(error);
     }
@@ -77,14 +126,20 @@ const MemberTicketsFix = () => {
 
   const onMemTicketsHandler = async (e: React.FormEvent) => {
     e.preventDefault();
+  
     try {
       //put 부분(수정하는 부분)
       const response = await instance.put(
         `/issued-tickets/${issuedTicketId}`,
-        {},
+        {
+          endAt : memTicketEndAt,
+          tutorId : tutorId
+        },
       );
 
       console.log(response);
+
+      navigate(`/dtickets/${issuedTicketId}`)
     } catch (error) {
       alert(error);
     }
@@ -125,7 +180,6 @@ const MemberTicketsFix = () => {
             </p>
             <div className="mt-1 flex items-center ">
               <input
-                type="date"
                 value={memTicketStartAt}
                 readOnly
                 className="w-full px-4 py-2 bg-[#f4f4f4] text-[#aeaeae] text-center rounded border-solid border-[1.5px] border-[#CFCFCF] pointer-events-none"
@@ -149,6 +203,7 @@ const MemberTicketsFix = () => {
               <input
                 type="date"
                 value={memTicketEndAt}
+                onChange={(e)=>setMemTicketEndAt(e.target.value)}
                 className="w-full px-4 py-2 text-center rounded border-solid border-[1.5px] border-[#CFCFCF]"
               />
             </div>
@@ -214,66 +269,71 @@ const MemberTicketsFix = () => {
               담당강사
               <span className="text-[#2D62EA]">*</span>
             </p>
-            <div className="mt-1 flex items-center">
-              <button className="w-50 mr-1 px-4 py-2 bg-[#f4f4f4] text-[#aeaeae] text-center rounded-lg border-solid border-[1.5px] border-[#CFCFCF] pointer-events-none">
-                선택하기 +
-              </button>
-              <div
-                id="PrivateTutor"
-                className="flex items-center px-4 py-2 text-center rounded-lg border-solid border-[1.5px] border-[#CFCFCF]"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
+            { tutorId === 0 ? 
+                    <div 
+                        className='w-[130px] border-[1px] border-[#6691FF] text-[#6691FF] px-3 py-2 rounded-[10px]'
+                        onClick={onSelectShow} > 
+                        + 선택하기
+                     </div>
+                     :
+                     <div className='flex border rounded-[10px] px-3 py-2 gap-2 w-[130px]' onClick={onSelectShow}>
+                         <img src={ProfileIcon} alt='프로필 아이콘'/>
+                        <div>{tutorName}</div>
+                     </div>
+            }
+          <button className="mt-9 w-full py-3 px-4 rounded disabled:text-[#aeaeae] disabled:bg-[#f4f4f4] enabled:text-white enabled:bg-[#2d62ea]/75 enabled:hover:bg-[#2d62ea]">
+            저장
+          </button>
+          </form>
+        )}
+        
+      </div>
+      {isShowTutor &&
+        <>
+            <div className='absolute top-0 left-0 bg-[#000000] opacity-90 w-full h-full' onClick={onClose}></div>
+            <div className='absolute top-[25%] left-[10%] bg-[#FFFFFF] w-[80%] h-1/2 overflow-y-auto rounded p-2'>
+                <form
+                    className=" px-4 py-1 bg-white rounded-[10px] flex border"
+                    onSubmit={onGetTutorHandler}
                 >
-                  <g clip-path="url(#clip0_18_55782)">
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="11.625"
-                      fill="white"
-                      stroke="#CFCFCF"
-                      stroke-width="0.75"
+                    <input
+                        className="flex-1 placeholder:text-xs placeholder:font-normal outline-none"
+                        placeholder="직원 이름을 입력하세요"
+                        value={searchTutor}
+                        onChange={(e) => setSearchTutor(e.target.value)}
                     />
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M12.9072 12.64C14.541 12.2351 15.7521 10.759 15.7521 9C15.7521 6.92893 14.0731 5.25 12.0021 5.25C9.93098 5.25 8.25205 6.92893 8.25205 9C8.25205 10.8022 9.52332 12.3074 11.218 12.6679C6.637 13.1599 3.19643 16.4669 3.48243 20.3516C9.83841 26.114 18.6869 22.3474 20.7931 19.9672C20.5271 16.3544 17.0923 12.9812 12.9072 12.64Z"
-                      fill="#CFCFCF"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_18_55782">
-                      <rect width="24" height="24" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
-                <p className="ml-2 mr-5">{privateTutorName}</p>
-                <button>
-                  <svg
+                    <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
                     height="24"
                     viewBox="0 0 24 24"
                     fill="none"
-                  >
-                    <path
-                      d="M7.28033 6.21967C6.98744 5.92678 6.51256 5.92678 6.21967 6.21967C5.92678 6.51256 5.92678 6.98744 6.21967 7.28033L10.9393 12L6.21967 16.7197C5.92678 17.0126 5.92678 17.4874 6.21967 17.7803C6.51256 18.0732 6.98744 18.0732 7.28033 17.7803L12 13.0607L16.7197 17.7803C17.0126 18.0732 17.4874 18.0732 17.7803 17.7803C18.0732 17.4874 18.0732 17.0126 17.7803 16.7197L13.0607 12L17.7803 7.28033C18.0732 6.98744 18.0732 6.51256 17.7803 6.21967C17.4874 5.92678 17.0126 5.92678 16.7197 6.21967L12 10.9393L7.28033 6.21967Z"
-                      fill="black"
-                    />
-                  </svg>
-                </button>
-              </div>
+                    >
+                        <path
+                            d="M13.4765 14.8907C12.4957 15.5892 11.2958 16 10 16C6.68629 16 4 13.3137 4 10C4 6.68629 6.68629 4 10 4C13.3137 4 16 6.68629 16 10C16 11.2958 15.5892 12.4957 14.8907 13.4765L20.7071 19.2929C21.0976 19.6834 21.0976 20.3166 20.7071 20.7071C20.3166 21.0976 19.6834 21.0976 19.2929 20.7071L13.4765 14.8907ZM14.5 10C14.5 7.51472 12.4853 5.5 10 5.5C7.51472 5.5 5.5 7.51472 5.5 10C5.5 12.4853 7.51472 14.5 10 14.5C12.4853 14.5 14.5 12.4853 14.5 10Z"
+                            fill="#505050"
+                        />
+                    </svg>
+                </form>
+                <div className='h-[450px] overflow-auto'>
+                {empList &&
+                empList.map((emp) => (
+                    <div 
+                        key={emp.id} 
+                        className='flex border rounded p-2 mt-2 justify-between items-center text-[13px]'
+                        onClick={() => onSetTutor(emp.id, emp.name)}>
+                        <div className='flex gap-2 items-center'>
+                            <img src={ProfileIcon} alt='프로필 아이콘'/>
+                            <div>{emp.name}({emp.loginId})</div>
+                        </div>
+                        <div>{emp.phone}</div>
+                    </div>
+                ))
+                }
+                </div>
             </div>
-          </form>
-        )}
-        <button className="mt-9 w-full py-3 px-4 rounded disabled:text-[#aeaeae] disabled:bg-[#f4f4f4] enabled:text-white enabled:bg-[#2d62ea]/75 enabled:hover:bg-[#2d62ea]">
-          저장
-        </button>
-      </div>
+        </>
+        }  
     </div>
   );
 };

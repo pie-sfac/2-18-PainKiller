@@ -79,18 +79,18 @@ const DetailMemberTickets = () => {
           </nav>
         </header>
 
-        <div className="flex justify-between mt-6 ">
+        <div className="flex justify-between p-5">
           <p className="font-bold text-xl">{deTickets?.title}</p>
           <p className="flex justify-center items-center bg-Pri-50 text-xs px-1 py-1 rounded text-Pri-500 w-[83px]">
             개인수업 - 1:1
           </p>
         </div>
 
-        <div className="font-bold text-left mt-8 text-Gray-800 text-lg mb-2">
+        <div className="font-bold text-left mt-8 text-Gray-800 text-lg mb-2 px-5">
           수강권 정보
         </div>
 
-        <div className="rounded-lg border border-Gray-200 py-5 px-6">
+        <div className="rounded-lg border border-Gray-200 py-5 px-6 mx-5">
           <div className="flex flex-col gap-3 justify-start items-start">
             <p>
               기본 횟수 :{' '}
