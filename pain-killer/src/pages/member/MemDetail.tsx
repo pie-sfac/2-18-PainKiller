@@ -45,12 +45,12 @@ const MemDetail = () => {
     try{
       const indicate = await instance.get(`/members/${useData}`)
       setMemContent(indicate.data)
-      console.log(indicate);
+     
     }catch(error){
       alert(error);
     }
   }
-  console.log(useData)
+  
 
   useEffect(() => {
     getMemDetail();
@@ -135,7 +135,7 @@ const MemDetail = () => {
               </div>
               <div className='felx items-center gap-2'>
                 <span className='text-[14px] text-[#808080]'>성별 </span>
-                <span className='text-[14px] text-[#000000]'>{memContent.sex}</span>
+                <span className='text-[14px] text-[#000000]'>{memContent.sex === 'FEMALE' ? "여" : "남"}</span>
               </div>   
             </div>
             <div className='flex justify-between'>

@@ -49,7 +49,7 @@ export default function Mypage() {
   }
 
   return (
-    <div className="bg-[#F4F4F4] p-2 h-[900px] overflow-y-auto">
+    <div className="bg-[#F4F4F4] p-2 h-[600px] overflow-y-auto">
       <div className="mb-3 px-6 py-2 bg-white rounded-[10px]">
         <div className="mb-2 flex justify-between items-center">
           <div className="flex items-center">
@@ -63,10 +63,11 @@ export default function Mypage() {
           </div>
 
           <div className="text-[#2D62EA] flex items-center text-[10px]">
-            <div className="mr-2 px-2 py-1 bg-[#F4F4F4] rounded-[4px]">
-              알림메시지 관리 권한
-            </div>
-            <span>+3</span>
+            {userData?.hashKey === "" ?  "" :
+              <div className="mr-2 px-2 py-1 bg-[#F4F4F4] rounded-[4px]">
+                비밀번호 변경 필요
+              </div>
+            }
           </div>
         </div>
         <div className="flex">
@@ -91,9 +92,11 @@ export default function Mypage() {
       <div className="text-left px-5 py-4 bg-white rounded-[10px]">
         <div className="mb-4 flex justify-between ">
           <p className="text-base font-extrabold text-[#505050]">내정보</p>
-          <button className="px-2 py-1 text-sm bg-white rounded-[10px] border-solid border border-[#E7E7E7]">
-            내 정보 수정
-          </button>
+          <Link to = {`/modpwd/${userData?.id}`}>
+            <div className="px-2 py-1 text-sm bg-white rounded-[10px] border-solid border border-[#E7E7E7]">
+              비밀번호 변경
+            </div>
+          </Link>
         </div>
         <div className="flex mb-2">
           <p className="w-24 text-sm text-[#505050]">이름 </p>
@@ -111,12 +114,6 @@ export default function Mypage() {
           <p className="w-24 text-sm text-[#505050]">아이디 </p>
           <p className="text-sm font-extrabold text-[#1D1D1D]">
             {userData?.loginId}
-          </p>
-        </div>
-        <div className="flex mb-2">
-          <p className="w-24 text-sm text-[#505050]">비밀번호 </p>
-          <p className="text-sm font-extrabold text-[#1D1D1D]">
-            {userData?.hashKey}
           </p>
         </div>
       </div>

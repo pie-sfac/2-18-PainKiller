@@ -120,10 +120,6 @@ const EmpDetail = () => {
                     <Link to = {`/modrole/${userId}`} className='flex items-center'>
                       <span className='text-[10px] text-[#AEAEAE] cursor-pointer'>권한 설정</span>
                     </Link>
-
-                    <Link to="/pwdreset">
-                    {empContent.pwdChangeRequired && <span className='text-[10px] text-[#AEAEAE] cursor-pointer'>비밀번호 변경</span>}
-                    </Link>
                     <span className='text-[10px] text-[#AEAEAE] cursor-pointer'>직원 퇴사</span>
                   </div>
                 </div>
@@ -148,36 +144,36 @@ const EmpDetail = () => {
                       <span>배정된 회원이 없습니다.</span>
                     </div>
                   ) : (
-                    <>
+                    <div className='h-[575px] overflow-y-auto'>
                       {empContent.members.map((member) => (
-                         <div className='flex flex-col h-[575px]'>
-                         <div className='border rounded flex flex-col p-2 gap-2 mb-5'>
-                           <div className='flex justify-between'>
-                             <div className='flex gap-2'>
-                               <img src={profileImg} alt='프사'/>
-                               <span>{member.name}</span>
-                             </div>
-                             <div>
-                               <span>{member.sex === 'FEMALE' ? "여" : "남"}</span>
-                             </div>
-                           </div>
-                           <div className='flex justify-between'>
-                             <span>{member.birthDate}</span>
-                           </div>
-                           <div className='flex justify-between'>
-                             <div className='flex items-center gap-2'>
-                               <span>연락처</span>
-                               <div className='text-[#AEAEAE]'>{member.phone}</div>
-                             </div>
-                             <div className='flex items-center gap-2'>
-                               <span>최근 방문일</span>
-                               <span className='text-[10px] text-[#AEAEAE]'>{member.visitedAt.slice(0,10)}</span>
-                             </div>  
-                           </div>
-                         </div>
+                         <div className='flex flex-col' key={member.id}>
+                          <div className='border rounded flex flex-col p-2 gap-2 mb-5'>
+                            <div className='flex justify-between'>
+                              <div className='flex gap-2'>
+                                <img src={profileImg} alt='프사'/>
+                                <span>{member.name}</span>
+                              </div>
+                              <div>
+                                <span>{member.sex === 'FEMALE' ? "여" : "남"}</span>
+                              </div>
+                            </div>
+                            <div className='flex justify-between'>
+                              <span>{member.birthDate}</span>
+                            </div>
+                            <div className='flex justify-between'>
+                              <div className='flex items-center gap-2'>
+                                <span>연락처</span>
+                                <div className='text-[#AEAEAE]'>{member.phone}</div>
+                              </div>
+                              <div className='flex items-center gap-2'>
+                                <span>최근 방문일</span>
+                                <span className='text-[12px] text-[#AEAEAE]'>{member.visitedAt.slice(0,10)}</span>
+                              </div>  
+                            </div>
+                          </div>
                        </div>
                       ))}
-                    </>
+                    </div>
                   )
                 }
                
