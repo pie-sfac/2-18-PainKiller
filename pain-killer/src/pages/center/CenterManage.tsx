@@ -43,7 +43,7 @@ const CenterManage = () => {
   
   
   return (
-    <div className="flex flex-col items-center bg-[#F4F4F4] p-2 gap-3 h-[900px] overflow-y-auto">
+    <div className="flex flex-col items-center bg-[#F4F4F4] p-2 gap-3 h-[600px] overflow-y-auto">
       <SearchBar />
       <div className="flex justify-between items-center w-full ">
         <span>
@@ -58,32 +58,33 @@ const CenterManage = () => {
           </Link>
         </div>
       </div>
-
-      {empList &&
-        empList.map((emp) => (
-          <div
-            key={emp.id}
-            className="flex flex-col bg-[#FFFFFF] rounded-[4px] w-full px-[10px] py-3 gap-2"
-          >
-            <Link to={`${emp.id}`}>
-              <div className="flex justify-between">
-                <div className="flex gap-3">
-                  <img src={Profile} alt="프사" />
-                  <span className="font-bold">{emp.name}</span>
+      <div className='w-full flex flex-col gap-2 h-[500px] overflow-y-auto'>
+        {empList &&
+          empList.map((emp) => (
+            <div
+              key={emp.id}
+              className="flex flex-col bg-[#FFFFFF] rounded-[4px] w-full px-[10px] py-3 gap-2"
+            >
+              <Link to={`${emp.id}`}>
+                <div className="flex justify-between">
+                  <div className="flex gap-3">
+                    <img src={Profile} alt="프사" />
+                    <span className="font-bold">{emp.name}</span>
+                  </div>
+                  <span>{emp.phone}</span>
                 </div>
-                <span>{emp.phone}</span>
+              </Link>
+              <div className="flex justify-between ">
+                <span className="font-bold">총 회원수</span>
+                <span>{emp.memberCount}명</span>
               </div>
-            </Link>
-            <div className="flex justify-between ">
-              <span className="font-bold">총 회원수</span>
-              <span>{emp.memberCount}명</span>
+              <div className="flex justify-between ">
+                <span className="font-bold">메모</span>
+                <span>{emp.memo}</span>
+              </div>
             </div>
-            <div className="flex justify-between ">
-              <span className="font-bold">메모</span>
-              <span>{emp.memo}</span>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
     </div>
   );
 };

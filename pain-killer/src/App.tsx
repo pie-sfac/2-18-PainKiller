@@ -37,6 +37,7 @@ import PrivateDetail from './pages/schedule/PrivateDetail';
 import CounselDetail from './pages/schedule/CounselingDetail';
 import ModPrivate from './pages/schedule/ModPrivate';
 import ModCounseling from './pages/schedule/ModCounseling';
+import ModPwd from './pages/mypage/ModPwd';
 
 function App() {
   return (
@@ -78,6 +79,7 @@ function App() {
           <Route path="/memberInfo/:useData" element={<MemDetail />} />
           <Route path="/addemp" element={<CreateEmp />} />
           <Route path="/changepwd" element={<ChangePwd />} />
+          <Route path='/modpwd/:userId' element={<ModPwd/>} />
           <Route
             path="/createstudyticket/:ticketId"
             element={<CreateStudyTicket />}

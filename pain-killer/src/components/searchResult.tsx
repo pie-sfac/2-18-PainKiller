@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 //import SearchBar from '../components/search';
 import Profile from '../assets/Profile_24px.svg';
 import BackImage from '../img/Back_24px 2.svg';
+import instance from '../api/axios_interceptors';
 
 export default function SearchResult() {
   // interface IEmpSearch {
@@ -34,7 +35,6 @@ export default function SearchResult() {
     // lastLoginedAt: string;
   }
 
-  const access_Token = localStorage.getItem('access_token');
   const [empMembersList, setEmpMembersList] = useState<IEmpMembersList[]>();
   const [empUserList, setEmpUserList] = useState<IEmpUserhList[]>();
 
@@ -44,24 +44,14 @@ export default function SearchResult() {
   const onPrevious = () => {
     navigate(-1);
   };
-
-  const getSearchEmp = () => {
+  
+  const getSearchEmp = async () => {
     try {
-      fetch(
-        `http://223.130.161.221/api/v1/search?query=${location.state.value}`,
-        {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${access_Token}`,
-          },
-        },
-      )
-        .then((response) => response.json())
-        .then((result) => {
-          console.log(result);
-          setEmpMembersList(result.members);
-          setEmpUserList(result.users);
-        });
+      const response = await instance.get(`/search?query=${location.state.value}`)
+
+      setEmpUserList(response.data.users)
+      setEmpMembersList(response.data.members);
+      
     } catch (error: any) {
       alert(error);
     }
@@ -84,10 +74,11 @@ export default function SearchResult() {
         <SearchBar />
       </div> */}
 
-      <div className="mt-5">
-        <p className="mb-1 text-left text-sm text-[#aeaeae]">
-          검색결과: {location.state.value}
+      <div className="flex flex-col gap-2 h-[600px] overflow-y-auto ">
+        <p className="mb-1 text-left text-sm text-[#aeaeae] mt-5">
+          검색결과: "{location.state.value}"
         </p>
+        
         {/* 삼항연산자 부분 and연산자(&&)로 수정  */}
         {empMembersList &&
           empMembersList.map((emp) => (
@@ -98,10 +89,10 @@ export default function SearchResult() {
               <div className="flex justify-between">
                 <div className="flex gap-3">
                   <img src={Profile} alt="프사" />
+                  <div className='bg-[#F4F4F4] text-[#6691FF] px-2 rounded'>회원</div>
                   <span className="font-bold">{emp.name}</span>
                 </div>
                 <span>{emp.phone}</span>
-                <span>{emp.sex === 'MALE' ? '남' : '여'}</span>
               </div>
             </div>
           ))}
@@ -115,11 +106,10 @@ export default function SearchResult() {
               <div className="flex justify-between">
                 <div className="flex gap-3">
                   <img src={Profile} alt="프사" />
+                  <div className='bg-[#F4F4F4] text-[#6691FF] px-2 rounded'>직원</div>
                   <span className="font-bold">{emp.name}</span>
                 </div>
                 <span>{emp.phone}</span>
-                <span>{emp.type}</span>
-                <span>{emp.loginId}</span>
               </div>
             </div>
           ))}

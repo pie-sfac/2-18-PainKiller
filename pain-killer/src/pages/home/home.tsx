@@ -32,11 +32,10 @@ export default function Home() {
       const ref = await instance.get('/me/summary')
 
       setUsedata(ref.data)
-      console.log(ref.data.center.staffCount)
 
       setMyScheduleCount(ref.data.mySchedule.counselingCount + ref.data.mySchedule.lessonCount);
 
-      console.log(ref);
+    
     } catch(error : any){
       alert(error);
     }
