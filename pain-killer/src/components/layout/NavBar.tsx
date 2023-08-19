@@ -40,23 +40,11 @@ const NavBar = () => {
             {centerMatch && (
               <>
                 <li>센터 관리 메뉴</li>
-                <li>직원관리</li>
-                <li>수강권 관리</li>
-                <li>기록 관리</li>
-                <li>미디어 관리</li>
-                <li>운영 데이터</li>
-                <li>알림 데이터</li>
-                <li>알림메세지</li>
-                <li>센터 정보</li>
               </>
             )}
             {mypageMatch && (
               <>
                 <li>마이 페이지 메뉴</li>
-                <li>내 정보</li>
-                <li>공지사항</li>
-                <li>앱 설정</li>
-                <li>운영 데이터</li>
               </>
             )}
           </ul>
